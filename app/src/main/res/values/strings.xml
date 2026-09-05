@@ -108,7 +108,7 @@
     <string name="backup_export_subtitle">Saves a .zip of every note and your settings.</string>
     <string name="backup_import_title">Import backup</string>
     <string name="backup_import_subtitle">Restores notes and settings from a backup .zip.</string>
-    <string name="backup_export_success">Backup saved — choose where to send it</string>
+    <string name="backup_export_success">Backup saved, choose where to send it</string>
     <string name="backup_export_failed">Couldn\'t create the backup</string>
     <string name="backup_import_success">Backup restored</string>
     <string name="backup_import_failed">Couldn\'t read that backup file</string>
