@@ -7,6 +7,7 @@
     android:layout_marginBottom="11dp"
     android:background="@drawable/bg_note_card"
     android:clickable="true"
+    android:clipToOutline="true"
     android:focusable="true"
     android:orientation="horizontal">
 
