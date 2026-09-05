@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.lukasosstudios.localnotes.R
@@ -171,11 +172,48 @@ class SettingsActivity : AppCompatActivity() {
                     renderAppLockSwitch()
                     return@setOnCheckedChangeListener
                 }
+                settings.appLockEnabled = true
+                settings.writeToFile(repository, repository.listNotes().size)
+                AppLockState.unlocked = true
+            } else {
+                // Disabling protection requires proving it's really you first --
+                // revert the switch now and only apply the change on success.
+                renderAppLockSwitch()
+                requestDisableAppLock()
             }
-            settings.appLockEnabled = checked
-            settings.writeToFile(repository, repository.listNotes().size)
-            AppLockState.unlocked = !checked || AppLockState.unlocked
         }
+    }
+
+    private fun requestDisableAppLock() {
+        val manager = BiometricManager.from(this)
+        val allowed = BiometricManager.Authenticators.BIOMETRIC_WEAK or BiometricManager.Authenticators.DEVICE_CREDENTIAL
+        if (manager.canAuthenticate(allowed) != BiometricManager.BIOMETRIC_SUCCESS) {
+            // Nothing to verify against anymore -- let it turn off rather than lock the person out.
+            settings.appLockEnabled = false
+            settings.writeToFile(repository, repository.listNotes().size)
+            renderAppLockSwitch()
+            return
+        }
+
+        val executor = ContextCompat.getMainExecutor(this)
+        val prompt = BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
+            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                settings.appLockEnabled = false
+                settings.writeToFile(repository, repository.listNotes().size)
+                renderAppLockSwitch()
+            }
+
+            override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                // Cancelled or failed -- leave app lock enabled, switch already reverted.
+            }
+        })
+
+        val promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle(getString(R.string.lock_prompt_title))
+            .setAllowedAuthenticators(allowed)
+            .build()
+
+        prompt.authenticate(promptInfo)
     }
 
     // ---- Backup & restore --------------------------------------------------

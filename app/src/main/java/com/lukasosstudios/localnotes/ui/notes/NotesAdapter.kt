@@ -104,10 +104,10 @@ class NotesAdapter(
             )
             binding.noteCardRoot.alpha = if (selectionMode && !selected) 0.6f else 1f
 
-            binding.root.setOnClickListener {
+            binding.noteCardRoot.setOnClickListener {
                 if (isSelectionMode()) onLongPress(note) else onOpen(note)
             }
-            binding.root.setOnLongClickListener {
+            binding.noteCardRoot.setOnLongClickListener {
                 onLongPress(note)
                 true
             }

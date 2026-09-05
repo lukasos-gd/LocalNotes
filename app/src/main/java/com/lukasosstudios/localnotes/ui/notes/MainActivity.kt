@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity() {
 
     private val selectedFileNames = mutableSetOf<String>()
     private var selectionMode = false
+    private var pendingScrollToTop = false
 
     private val lockLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode != Activity.RESULT_OK) {
@@ -60,7 +61,7 @@ class MainActivity : AppCompatActivity() {
             onOpen = { note -> openEditor(note.fileName) },
             onTogglePin = { note -> mutate(note.copy(isPinned = !note.isPinned)) },
             onToggleArchive = { note -> mutate(note.copy(isArchived = !note.isArchived)) },
-            onTrash = { note -> mutate(note.copy(isDeleted = true, isArchived = false)) },
+            onTrash = { note -> confirmTrash(note) },
             onRestore = { note -> mutate(note.copy(isDeleted = false)) },
             onDeleteForever = { note -> confirmDeleteForever(note) },
             onLongPress = { note -> toggleSelection(note) },
@@ -164,6 +165,17 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
+    private fun confirmTrash(note: Note) {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.trash_confirm_title)
+            .setMessage(R.string.trash_confirm_message)
+            .setNegativeButton(R.string.cancel, null)
+            .setPositiveButton(R.string.trash_action) { _, _ ->
+                mutate(note.copy(isDeleted = true, isArchived = false))
+            }
+            .show()
+    }
+
     private fun emptyTrash() {
         allNotes.filter { it.isDeleted }.forEach { repository.deleteForever(it) }
         reload()
@@ -226,8 +238,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun bulkTrashOrDeleteForever() {
+        val count = selectedFileNames.size
         if (currentFilter == NoteFilter.TRASH) {
-            val count = selectedFileNames.size
             AlertDialog.Builder(this)
                 .setTitle(getString(R.string.bulk_delete_forever_title, count))
                 .setMessage(R.string.bulk_delete_forever_message)
@@ -239,11 +251,18 @@ class MainActivity : AppCompatActivity() {
                 }
                 .show()
         } else {
-            selectedNotes().forEach {
-                repository.saveNote(it.copy(isDeleted = true, isArchived = false, isPinned = false, updatedAt = System.currentTimeMillis()))
-            }
-            exitSelectionMode()
-            reload()
+            AlertDialog.Builder(this)
+                .setTitle(getString(R.string.bulk_trash_confirm_title, count))
+                .setMessage(R.string.bulk_trash_confirm_message)
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.trash_action) { _, _ ->
+                    selectedNotes().forEach {
+                        repository.saveNote(it.copy(isDeleted = true, isArchived = false, isPinned = false, updatedAt = System.currentTimeMillis()))
+                    }
+                    exitSelectionMode()
+                    reload()
+                }
+                .show()
         }
     }
 
@@ -271,9 +290,16 @@ class MainActivity : AppCompatActivity() {
         adapter.submit(sorted, currentFilter)
         renderSelectionBar()
 
+        if (pendingScrollToTop) {
+            pendingScrollToTop = false
+            if (sort == SortMode.UPDATED && sorted.isNotEmpty()) {
+                binding.notesRecyclerView.scrollToPosition(0)
+            }
+        }
+
         val liveCount = allNotes.count { !it.isDeleted }
         val noteWord = if (liveCount == 1) "note" else "notes"
-        binding.summaryTitle.text = "$liveCount $noteWord kept close"
+        binding.summaryTitle.text = "$liveCount $noteWord"
 
         binding.sectionTitle.text = when (currentFilter) {
             NoteFilter.ALL -> getString(R.string.section_your_notes)
@@ -343,6 +369,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openEditor(fileName: String?) {
+        pendingScrollToTop = true
         val intent = Intent(this, NoteEditorActivity::class.java)
         if (fileName != null) intent.putExtra(NoteEditorActivity.EXTRA_FILE_NAME, fileName)
         startActivity(intent)

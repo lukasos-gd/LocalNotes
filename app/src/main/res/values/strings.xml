@@ -3,8 +3,8 @@
     <string name="app_name">Local Notes</string>
 
     <!-- Home -->
-    <string name="eyebrow_home">YOUR PRIVATE SPACE</string>
-    <string name="summary_label">A little room to think</string>
+    <string name="eyebrow_home">STORED ON THIS DEVICE</string>
+    <string name="summary_label">Total notes</string>
     <string name="search_hint">Search your notes</string>
     <string name="filter_all">All notes</string>
     <string name="filter_pinned">Pinned</string>
@@ -17,9 +17,9 @@
     <string name="no_text_yet">No text yet</string>
     <string name="empty_title_search">No notes found</string>
     <string name="empty_title_trash">Trash is empty</string>
-    <string name="empty_title_default">Start with one thought</string>
+    <string name="empty_title_default">No notes yet</string>
     <string name="empty_copy_search">Try a different word or phrase.</string>
-    <string name="empty_copy_default">Capture something small. You can shape it later.</string>
+    <string name="empty_copy_default">Tap New note to create your first one.</string>
     <string name="cd_calculator">Open calculator</string>
     <string name="cd_settings">Open settings</string>
     <string name="cd_pin">Pin note</string>
@@ -38,18 +38,18 @@
     <string name="body_hint">Start writing…</string>
     <string name="saved_locally_hint">Saved locally on this device</string>
     <string name="note_color_label">Note color</string>
-    <string name="privacy_tip">No account, no cloud. Your thoughts stay on your device.</string>
+    <string name="privacy_tip">No account or cloud sync. This note is stored only on your device.</string>
 
     <!-- Calculator -->
     <string name="calculator_title">Calculator</string>
-    <string name="calculator_ready">Ready when you are</string>
-    <string name="calculator_helper">A handy little calculator, always offline.</string>
+    <string name="calculator_ready">Enter a calculation</string>
+    <string name="calculator_helper">Works fully offline, same as the rest of the app.</string>
 
     <!-- Settings -->
     <string name="settings_title">Settings</string>
-    <string name="settings_eyebrow">PERSONALIZE YOUR SPACE</string>
-    <string name="settings_heading">Make it yours.</string>
-    <string name="settings_subtitle">Small choices that make opening Local Notes feel natural.</string>
+    <string name="settings_eyebrow">APP SETTINGS</string>
+    <string name="settings_heading">Settings</string>
+    <string name="settings_subtitle">Theme, sort order, backups, and app lock.</string>
     <string name="section_appearance">Appearance</string>
     <string name="theme_system">System</string>
     <string name="theme_light">Light</string>
@@ -85,6 +85,11 @@
     <string name="delete_forever_message">This note will be permanently removed and can\'t be recovered.</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
+    <string name="trash_confirm_title">Move to trash?</string>
+    <string name="trash_confirm_message">You can restore it later from the Trash tab.</string>
+    <string name="trash_action">Move to trash</string>
+    <string name="bulk_trash_confirm_title">Move %1$d notes to trash?</string>
+    <string name="bulk_trash_confirm_message">You can restore them later from the Trash tab.</string>
 
     <!-- Multi-select -->
     <string name="selection_count">%1$d selected</string>
@@ -122,7 +127,7 @@
     <string name="app_lock_subtitle">Require your fingerprint, face, or device PIN to open the app.</string>
     <string name="app_lock_unavailable">Set up a screen lock (PIN, pattern, or fingerprint) on your device first.</string>
     <string name="lock_screen_title">Local Notes is locked</string>
-    <string name="lock_screen_subtitle">Verify it\'s you to keep going.</string>
+    <string name="lock_screen_subtitle">Authenticate to continue.</string>
     <string name="unlock_button">Unlock</string>
     <string name="lock_prompt_title">Unlock Local Notes</string>
 </resources>
