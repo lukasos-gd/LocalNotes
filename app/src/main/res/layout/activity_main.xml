@@ -13,6 +13,7 @@
 
         <!-- Brand header -->
         <LinearLayout
+            android:id="@+id/brandHeaderRow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/screen_padding"
@@ -64,6 +65,61 @@
                 android:contentDescription="@string/cd_settings"
                 android:src="@drawable/ic_sliders"
                 app:tint="@color/foreground" />
+        </LinearLayout>
+
+        <!-- Selection mode bar (replaces the brand header while active) -->
+        <LinearLayout
+            android:id="@+id/selectionBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/screen_padding"
+            android:layout_marginEnd="@dimen/screen_padding"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="18dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageButton
+                android:id="@+id/selectionCancelButton"
+                style="@style/Widget.IconButton"
+                android:contentDescription="@string/cd_select_cancel"
+                android:src="@drawable/ic_close_circle"
+                app:tint="@color/foreground" />
+
+            <TextView
+                android:id="@+id/selectionCountText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="12dp"
+                android:fontFamily="sans-serif"
+                android:textStyle="bold"
+                android:textColor="@color/foreground"
+                android:textSize="16sp" />
+
+            <ImageButton
+                android:id="@+id/selectionPinButton"
+                style="@style/Widget.IconButton"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@string/cd_bulk_pin"
+                android:src="@drawable/ic_pin_outline"
+                app:tint="@color/foreground" />
+
+            <ImageButton
+                android:id="@+id/selectionArchiveButton"
+                style="@style/Widget.IconButton"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@string/cd_bulk_archive"
+                android:src="@drawable/ic_archive"
+                app:tint="@color/foreground" />
+
+            <ImageButton
+                android:id="@+id/selectionTrashButton"
+                style="@style/Widget.IconButton"
+                android:contentDescription="@string/cd_bulk_trash"
+                android:src="@drawable/ic_trash"
+                app:tint="@color/destructive" />
         </LinearLayout>
 
         <!-- Summary banner -->

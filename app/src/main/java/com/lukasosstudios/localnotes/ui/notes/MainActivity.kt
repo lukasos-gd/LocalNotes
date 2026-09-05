@@ -1,5 +1,6 @@
 package com.lukasosstudios.localnotes.ui.notes
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
@@ -10,6 +11,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +26,7 @@ import com.lukasosstudios.localnotes.model.SortMode
 import com.lukasosstudios.localnotes.ui.calculator.CalculatorActivity
 import com.lukasosstudios.localnotes.ui.editor.NoteEditorActivity
 import com.lukasosstudios.localnotes.ui.settings.SettingsActivity
+import com.lukasosstudios.localnotes.util.AppLock
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,6 +38,15 @@ class MainActivity : AppCompatActivity() {
     private var allNotes: List<Note> = emptyList()
     private var currentFilter: NoteFilter = NoteFilter.ALL
     private var searchQuery: String = ""
+
+    private val selectedFileNames = mutableSetOf<String>()
+    private var selectionMode = false
+
+    private val lockLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode != Activity.RESULT_OK) {
+            finish()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +62,10 @@ class MainActivity : AppCompatActivity() {
             onToggleArchive = { note -> mutate(note.copy(isArchived = !note.isArchived)) },
             onTrash = { note -> mutate(note.copy(isDeleted = true, isArchived = false)) },
             onRestore = { note -> mutate(note.copy(isDeleted = false)) },
-            onDeleteForever = { note -> confirmDeleteForever(note) }
+            onDeleteForever = { note -> confirmDeleteForever(note) },
+            onLongPress = { note -> toggleSelection(note) },
+            isSelected = { note -> selectedFileNames.contains(note.fileName) },
+            isSelectionMode = { selectionMode }
         )
         binding.notesRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.notesRecyclerView.adapter = adapter
@@ -76,11 +91,18 @@ class MainActivity : AppCompatActivity() {
 
         binding.emptyTrashButton.setOnClickListener { emptyTrash() }
 
+        binding.selectionCancelButton.setOnClickListener { exitSelectionMode() }
+        binding.selectionPinButton.setOnClickListener { bulkPrimaryAction() }
+        binding.selectionArchiveButton.setOnClickListener { bulkArchive() }
+        binding.selectionTrashButton.setOnClickListener { bulkTrashOrDeleteForever() }
+
         buildFilterPills()
     }
 
     override fun onResume() {
         super.onResume()
+        if (AppLock.guard(this, settingsRepository, lockLauncher)) return
+
         if (!repository.hasPermission()) {
             promptForStoragePermission()
         } else {
@@ -118,6 +140,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun reload() {
         allNotes = repository.listNotes()
+        // Drop selections for notes that no longer exist/qualify.
+        selectedFileNames.retainAll(allNotes.map { it.fileName }.toSet())
+        if (selectedFileNames.isEmpty()) selectionMode = false
         render()
     }
 
@@ -144,6 +169,86 @@ class MainActivity : AppCompatActivity() {
         reload()
     }
 
+    // ---- Multi-select -------------------------------------------------
+
+    private fun toggleSelection(note: Note) {
+        if (selectedFileNames.contains(note.fileName)) {
+            selectedFileNames.remove(note.fileName)
+        } else {
+            selectedFileNames.add(note.fileName)
+        }
+        selectionMode = selectedFileNames.isNotEmpty()
+        renderSelectionBar()
+        adapter.refreshSelectionState()
+    }
+
+    private fun exitSelectionMode() {
+        selectedFileNames.clear()
+        selectionMode = false
+        renderSelectionBar()
+        adapter.refreshSelectionState()
+    }
+
+    private fun renderSelectionBar() {
+        binding.selectionBar.visibility = if (selectionMode) View.VISIBLE else View.GONE
+        binding.brandHeaderRow.visibility = if (selectionMode) View.GONE else View.VISIBLE
+        binding.selectionCountText.text = getString(R.string.selection_count, selectedFileNames.size)
+
+        val isTrash = currentFilter == NoteFilter.TRASH
+        binding.selectionArchiveButton.visibility = if (isTrash) View.GONE else View.VISIBLE
+        binding.selectionPinButton.setImageResource(if (isTrash) R.drawable.ic_restore else R.drawable.ic_pin_outline)
+        binding.selectionPinButton.contentDescription =
+            getString(if (isTrash) R.string.cd_bulk_restore else R.string.cd_bulk_pin)
+        binding.selectionTrashButton.contentDescription =
+            getString(if (isTrash) R.string.cd_bulk_delete_forever else R.string.cd_bulk_trash)
+    }
+
+    private fun selectedNotes(): List<Note> = allNotes.filter { selectedFileNames.contains(it.fileName) }
+
+    private fun bulkPrimaryAction() {
+        if (currentFilter == NoteFilter.TRASH) {
+            selectedNotes().forEach { repository.saveNote(it.copy(isDeleted = false, updatedAt = System.currentTimeMillis())) }
+        } else {
+            val shouldPin = selectedNotes().any { !it.isPinned }
+            selectedNotes().forEach { repository.saveNote(it.copy(isPinned = shouldPin, updatedAt = System.currentTimeMillis())) }
+        }
+        exitSelectionMode()
+        reload()
+    }
+
+    private fun bulkArchive() {
+        val shouldArchive = selectedNotes().any { !it.isArchived }
+        selectedNotes().forEach {
+            repository.saveNote(it.copy(isArchived = shouldArchive, isPinned = false, updatedAt = System.currentTimeMillis()))
+        }
+        exitSelectionMode()
+        reload()
+    }
+
+    private fun bulkTrashOrDeleteForever() {
+        if (currentFilter == NoteFilter.TRASH) {
+            val count = selectedFileNames.size
+            AlertDialog.Builder(this)
+                .setTitle(getString(R.string.bulk_delete_forever_title, count))
+                .setMessage(R.string.bulk_delete_forever_message)
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.delete) { _, _ ->
+                    selectedNotes().forEach { repository.deleteForever(it) }
+                    exitSelectionMode()
+                    reload()
+                }
+                .show()
+        } else {
+            selectedNotes().forEach {
+                repository.saveNote(it.copy(isDeleted = true, isArchived = false, isPinned = false, updatedAt = System.currentTimeMillis()))
+            }
+            exitSelectionMode()
+            reload()
+        }
+    }
+
+    // ---- Rendering ------------------------------------------------------
+
     private fun visibleForFilter(filter: NoteFilter): List<Note> = allNotes.filter { note ->
         when (filter) {
             NoteFilter.PINNED -> note.isPinned && !note.isDeleted && !note.isArchived
@@ -164,6 +269,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         adapter.submit(sorted, currentFilter)
+        renderSelectionBar()
 
         val liveCount = allNotes.count { !it.isDeleted }
         val noteWord = if (liveCount == 1) "note" else "notes"
@@ -229,6 +335,7 @@ class MainActivity : AppCompatActivity() {
 
             pillBinding.pillRoot.setOnClickListener {
                 currentFilter = filter
+                exitSelectionMode()
                 render()
             }
             binding.filterRow.addView(pillBinding.root)

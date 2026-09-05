@@ -73,10 +73,56 @@
     <string name="color_sage">Sage</string>
     <string name="color_rose">Rose</string>
     <string name="color_lavender">Iris</string>
+    <string name="color_peach">Peach</string>
+    <string name="color_mint">Mint</string>
+    <string name="color_slate">Slate</string>
+    <string name="color_sun">Sun</string>
+    <string name="color_coral">Coral</string>
+    <string name="color_custom">Custom</string>
 
     <!-- Dialogs -->
     <string name="delete_forever_title">Delete forever?</string>
     <string name="delete_forever_message">This note will be permanently removed and can\'t be recovered.</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
+
+    <!-- Multi-select -->
+    <string name="selection_count">%1$d selected</string>
+    <string name="cd_select_cancel">Cancel selection</string>
+    <string name="cd_bulk_pin">Pin selected</string>
+    <string name="cd_bulk_archive">Archive selected</string>
+    <string name="cd_bulk_trash">Trash selected</string>
+    <string name="cd_bulk_restore">Restore selected</string>
+    <string name="cd_bulk_delete_forever">Delete selected forever</string>
+    <string name="bulk_delete_forever_title">Delete %1$d notes forever?</string>
+    <string name="bulk_delete_forever_message">These notes will be permanently removed and can\'t be recovered.</string>
+
+    <!-- Custom color picker -->
+    <string name="custom_color_title">Pick a custom color</string>
+    <string name="custom_color_hex_hint">#RRGGBB</string>
+    <string name="use_color">Use this color</string>
+
+    <!-- Backup / restore -->
+    <string name="section_backup">Backup &amp; restore</string>
+    <string name="backup_export_title">Export backup</string>
+    <string name="backup_export_subtitle">Saves a .zip of every note and your settings.</string>
+    <string name="backup_import_title">Import backup</string>
+    <string name="backup_import_subtitle">Restores notes and settings from a backup .zip.</string>
+    <string name="backup_export_success">Backup saved — choose where to send it</string>
+    <string name="backup_export_failed">Couldn\'t create the backup</string>
+    <string name="backup_import_success">Backup restored</string>
+    <string name="backup_import_failed">Couldn\'t read that backup file</string>
+    <string name="backup_import_confirm_title">Import this backup?</string>
+    <string name="backup_import_confirm_message">This adds the notes from the backup to your current notes. Notes with the same file name will be overwritten.</string>
+    <string name="import_action">Import</string>
+
+    <!-- App lock -->
+    <string name="section_security">Security</string>
+    <string name="app_lock_title">Lock Local Notes</string>
+    <string name="app_lock_subtitle">Require your fingerprint, face, or device PIN to open the app.</string>
+    <string name="app_lock_unavailable">Set up a screen lock (PIN, pattern, or fingerprint) on your device first.</string>
+    <string name="lock_screen_title">Local Notes is locked</string>
+    <string name="lock_screen_subtitle">Verify it\'s you to keep going.</string>
+    <string name="unlock_button">Unlock</string>
+    <string name="lock_prompt_title">Unlock Local Notes</string>
 </resources>

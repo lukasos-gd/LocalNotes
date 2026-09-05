@@ -1,5 +1,7 @@
 package com.lukasosstudios.localnotes.ui.settings
 
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -7,15 +9,22 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.biometric.BiometricManager
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.lukasosstudios.localnotes.R
+import com.lukasosstudios.localnotes.data.BackupManager
 import com.lukasosstudios.localnotes.data.NoteRepository
 import com.lukasosstudios.localnotes.data.SettingsRepository
 import com.lukasosstudios.localnotes.databinding.ActivitySettingsBinding
 import com.lukasosstudios.localnotes.databinding.ItemOptionRowBinding
 import com.lukasosstudios.localnotes.model.SortMode
 import com.lukasosstudios.localnotes.model.ThemeMode
+import com.lukasosstudios.localnotes.util.AppLock
+import com.lukasosstudios.localnotes.util.AppLockState
 import com.lukasosstudios.localnotes.util.ThemeUtils
 
 class SettingsActivity : AppCompatActivity() {
@@ -23,6 +32,17 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingsBinding
     private lateinit var repository: NoteRepository
     private lateinit var settings: SettingsRepository
+    private lateinit var backupManager: BackupManager
+
+    private var pendingImportUri: Uri? = null
+
+    private val lockLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode != Activity.RESULT_OK) finish()
+    }
+
+    private val importPicker = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        if (uri != null) confirmImport(uri)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +51,7 @@ class SettingsActivity : AppCompatActivity() {
 
         repository = NoteRepository(this)
         settings = SettingsRepository(this)
+        backupManager = BackupManager(this, repository)
         settings.loadFromFile(repository)
 
         binding.backButton.setOnClickListener { finish() }
@@ -44,12 +65,16 @@ class SettingsActivity : AppCompatActivity() {
         buildThemeOptions()
         buildSortOptions()
         renderStorageStatus()
+        renderAppLockSwitch()
 
         binding.storageActionButton.setOnClickListener { requestStoragePermission() }
+        binding.exportRow.setOnClickListener { exportBackup() }
+        binding.importRow.setOnClickListener { importPicker.launch(arrayOf("application/zip", "application/octet-stream")) }
     }
 
     override fun onResume() {
         super.onResume()
+        if (AppLock.guard(this, settings, lockLauncher)) return
         renderStorageStatus()
     }
 
@@ -130,5 +155,64 @@ class SettingsActivity : AppCompatActivity() {
                 1001
             )
         }
+    }
+
+    // ---- App lock --------------------------------------------------------
+
+    private fun renderAppLockSwitch() {
+        binding.appLockSwitch.setOnCheckedChangeListener(null)
+        binding.appLockSwitch.isChecked = settings.appLockEnabled
+        binding.appLockSwitch.setOnCheckedChangeListener { _, checked ->
+            if (checked) {
+                val manager = BiometricManager.from(this)
+                val allowed = BiometricManager.Authenticators.BIOMETRIC_WEAK or BiometricManager.Authenticators.DEVICE_CREDENTIAL
+                if (manager.canAuthenticate(allowed) != BiometricManager.BIOMETRIC_SUCCESS) {
+                    Toast.makeText(this, R.string.app_lock_unavailable, Toast.LENGTH_LONG).show()
+                    renderAppLockSwitch()
+                    return@setOnCheckedChangeListener
+                }
+            }
+            settings.appLockEnabled = checked
+            settings.writeToFile(repository, repository.listNotes().size)
+            AppLockState.unlocked = !checked || AppLockState.unlocked
+        }
+    }
+
+    // ---- Backup & restore --------------------------------------------------
+
+    private fun exportBackup() {
+        val zip = backupManager.export()
+        if (zip == null) {
+            Toast.makeText(this, R.string.backup_export_failed, Toast.LENGTH_LONG).show()
+            return
+        }
+        Toast.makeText(this, R.string.backup_export_success, Toast.LENGTH_SHORT).show()
+        try {
+            val uri = FileProvider.getUriForFile(this, "$packageName.fileprovider", zip)
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "application/zip"
+                putExtra(Intent.EXTRA_STREAM, uri)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.backup_export_title)))
+        } catch (_: Exception) {
+        }
+    }
+
+    private fun confirmImport(uri: Uri) {
+        pendingImportUri = uri
+        AlertDialog.Builder(this)
+            .setTitle(R.string.backup_import_confirm_title)
+            .setMessage(R.string.backup_import_confirm_message)
+            .setNegativeButton(R.string.cancel, null)
+            .setPositiveButton(R.string.import_action) { _, _ ->
+                val success = pendingImportUri?.let { backupManager.import(it) } ?: false
+                Toast.makeText(
+                    this,
+                    if (success) R.string.backup_import_success else R.string.backup_import_failed,
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+            .show()
     }
 }

@@ -10,6 +10,7 @@ data class Note(
     val title: String,
     val body: String,
     val color: NoteColor,
+    val customColorHex: String? = null,
     val isPinned: Boolean,
     val isArchived: Boolean,
     val isDeleted: Boolean,

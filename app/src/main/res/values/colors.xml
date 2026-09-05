@@ -44,6 +44,27 @@
     <color name="note_lavender_border">#D3C6F3</color>
     <color name="note_lavender_accent">#725CB2</color>
 
+    <!-- Extra presets: peach / mint / slate / sun / coral -->
+    <color name="note_peach_bg">#FFEFE2</color>
+    <color name="note_peach_border">#F1CBA6</color>
+    <color name="note_peach_accent">#BD7233</color>
+
+    <color name="note_mint_bg">#E7F7F1</color>
+    <color name="note_mint_border">#AFE0CC</color>
+    <color name="note_mint_accent">#2E8F6C</color>
+
+    <color name="note_slate_bg">#EBEEF2</color>
+    <color name="note_slate_border">#C6CEDA</color>
+    <color name="note_slate_accent">#4C5C74</color>
+
+    <color name="note_sun_bg">#FFF6DC</color>
+    <color name="note_sun_border">#F1DE9B</color>
+    <color name="note_sun_accent">#B08A1A</color>
+
+    <color name="note_coral_bg">#FFEAEA</color>
+    <color name="note_coral_border">#F4B9B9</color>
+    <color name="note_coral_accent">#C24E4E</color>
+
     <!-- Fixed brand colors (used regardless of theme, e.g. on the primary summary card) -->
     <color name="summary_label">#B9CCE3</color>
     <color name="summary_mark_bg">#DCEBFA</color>

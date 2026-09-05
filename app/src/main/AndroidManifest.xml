@@ -15,6 +15,9 @@
         android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
 
+    <!-- App lock (fingerprint/face/PIN via the system's own screen lock) -->
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+
     <application
         android:name=".LocalNotesApp"
         android:allowBackup="true"
@@ -53,6 +56,21 @@
             android:name=".ui.settings.SettingsActivity"
             android:exported="false"
             android:parentActivityName=".ui.notes.MainActivity" />
+
+        <activity
+            android:name=".ui.security.LockActivity"
+            android:exported="false"
+            android:theme="@style/Theme.LocalNotes.Splash" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
     </application>
 

@@ -68,6 +68,7 @@ class NoteRepository(private val context: Context) {
                 title = title,
                 body = body,
                 color = NoteColor.fromId(props["color"]),
+                customColorHex = props["customColor"],
                 isPinned = props["pinned"] == "true",
                 isArchived = props["archived"] == "true",
                 isDeleted = props["deleted"] == "true",
@@ -85,6 +86,9 @@ class NoteRepository(private val context: Context) {
         val file = File(notesDir(), note.fileName)
         val sb = StringBuilder()
         sb.append("color=").append(note.color.id).append('\n')
+        if (note.color.isCustom && !note.customColorHex.isNullOrBlank()) {
+            sb.append("customColor=").append(note.customColorHex).append('\n')
+        }
         sb.append("pinned=").append(note.isPinned).append('\n')
         sb.append("archived=").append(note.isArchived).append('\n')
         sb.append("deleted=").append(note.isDeleted).append('\n')

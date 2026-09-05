@@ -1,20 +1,29 @@
 package com.lukasosstudios.localnotes.ui.calculator
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.Gravity
 import android.widget.GridLayout
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.lukasosstudios.localnotes.R
+import com.lukasosstudios.localnotes.data.SettingsRepository
 import com.lukasosstudios.localnotes.databinding.ActivityCalculatorBinding
+import com.lukasosstudios.localnotes.util.AppLock
 import kotlin.math.roundToLong
 
 class CalculatorActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCalculatorBinding
+    private lateinit var settingsRepository: SettingsRepository
     private var expression = ""
+
+    private val lockLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode != Activity.RESULT_OK) finish()
+    }
 
     private data class Key(val label: String, val kind: Kind, val icon: Int = 0)
     private enum class Kind { CLEAR, PAREN_OPEN, PAREN_CLOSE, OPERATOR, NUMBER, DOT, BACKSPACE, EQUALS }
@@ -31,9 +40,15 @@ class CalculatorActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCalculatorBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        settingsRepository = SettingsRepository(this)
 
         binding.backButton.setOnClickListener { finish() }
         buildKeypad()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        AppLock.guard(this, settingsRepository, lockLauncher)
     }
 
     private fun buildKeypad() {

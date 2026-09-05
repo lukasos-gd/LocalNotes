@@ -42,6 +42,26 @@
     <color name="note_lavender_border">#65588E</color>
     <color name="note_lavender_accent">#C4B5F5</color>
 
+    <color name="note_peach_bg">#432E1E</color>
+    <color name="note_peach_border">#7D5732</color>
+    <color name="note_peach_accent">#F0A868</color>
+
+    <color name="note_mint_bg">#1B3A2F</color>
+    <color name="note_mint_border">#3E7A5F</color>
+    <color name="note_mint_accent">#7FDCB4</color>
+
+    <color name="note_slate_bg">#28303D</color>
+    <color name="note_slate_border">#4E5D71</color>
+    <color name="note_slate_accent">#AEBED4</color>
+
+    <color name="note_sun_bg">#3D3520</color>
+    <color name="note_sun_border">#78682F</color>
+    <color name="note_sun_accent">#F0D375</color>
+
+    <color name="note_coral_bg">#402424</color>
+    <color name="note_coral_border">#7A4646</color>
+    <color name="note_coral_accent">#F09B9B</color>
+
     <color name="summary_label">#B9CCE3</color>
     <color name="summary_mark_bg">#26415F</color>
 </resources>

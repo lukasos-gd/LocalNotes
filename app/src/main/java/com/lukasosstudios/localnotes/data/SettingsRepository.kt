@@ -27,6 +27,12 @@ class SettingsRepository(context: Context) {
             prefs.edit().putString(KEY_SORT, value.id).apply()
         }
 
+    var appLockEnabled: Boolean
+        get() = prefs.getBoolean(KEY_APP_LOCK, false)
+        set(value) {
+            prefs.edit().putBoolean(KEY_APP_LOCK, value).apply()
+        }
+
     /** Reads Android/media/settings.properties (if present) into the cache. */
     fun loadFromFile(repository: NoteRepository) {
         val file = repository.settingsFile()
@@ -36,6 +42,7 @@ class SettingsRepository(context: Context) {
             file.inputStream().use { props.load(it) }
             theme = ThemeMode.fromId(props.getProperty("theme"))
             sort = SortMode.fromId(props.getProperty("sort"))
+            appLockEnabled = props.getProperty("app_lock") == "true"
         } catch (_: Exception) {
             // Keep whatever is already cached
         }
@@ -48,6 +55,7 @@ class SettingsRepository(context: Context) {
         val sb = StringBuilder()
         sb.append("theme=").append(theme.id).append('\n')
         sb.append("sort=").append(sort.id).append('\n')
+        sb.append("app_lock=").append(appLockEnabled).append('\n')
         sb.append("notes_count=").append(notesCount).append('\n')
         sb.append("storage_format=plain-text\n")
         try {
@@ -59,5 +67,6 @@ class SettingsRepository(context: Context) {
     companion object {
         private const val KEY_THEME = "theme"
         private const val KEY_SORT = "sort"
+        private const val KEY_APP_LOCK = "app_lock"
     }
 }
