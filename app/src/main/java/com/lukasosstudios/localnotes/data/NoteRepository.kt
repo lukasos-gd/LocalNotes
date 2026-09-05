@@ -16,7 +16,8 @@ import java.io.File
  */
 class NoteRepository(private val context: Context) {
 
-    fun storageRoot(): File = File(Environment.getExternalStorageDirectory(), "Android/media")
+    fun storageRoot(): File =
+        File(Environment.getExternalStorageDirectory(), "Android/media/${context.packageName}")
 
     fun notesDir(): File = File(storageRoot(), "notes")
 

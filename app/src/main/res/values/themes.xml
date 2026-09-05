@@ -22,26 +22,26 @@
         <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
 
-    <style name="Text.Eyebrow">
+    <style name="Text.Eyebrow" parent="">
         <item name="android:textSize">10sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:letterSpacing">0.16</item>
         <item name="android:textColor">@color/mutedForeground</item>
     </style>
 
-    <style name="Text.Heading">
+    <style name="Text.Heading" parent="">
         <item name="android:textSize">25sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/foreground</item>
     </style>
 
-    <style name="Text.SectionTitle">
+    <style name="Text.SectionTitle" parent="">
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/foreground</item>
     </style>
 
-    <style name="Widget.IconButton">
+    <style name="Widget.IconButton" parent="">
         <item name="android:layout_width">42dp</item>
         <item name="android:layout_height">42dp</item>
         <item name="android:background">@drawable/bg_icon_button</item>

@@ -60,7 +60,7 @@
     <string name="sort_title">Title</string>
     <string name="section_storage">Local file storage</string>
     <string name="storage_title">Android/media storage</string>
-    <string name="storage_subtitle">notes live as plain-text files in Android/media/notes, settings in Android/media/settings.properties.</string>
+    <string name="storage_subtitle">notes live as plain-text files in Android/media/com.lukasosstudios.localnotes/notes, settings in the same folder\'s settings.properties.</string>
     <string name="storage_granted">Access granted</string>
     <string name="storage_not_granted">Grant access</string>
     <string name="about_title">Local Notes</string>
