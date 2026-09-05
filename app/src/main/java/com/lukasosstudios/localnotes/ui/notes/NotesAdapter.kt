@@ -62,12 +62,10 @@ class NotesAdapter(
             val context = binding.root.context
 
             val bgColor = NoteColorResolver.background(context, note.color, note.customColorHex)
-            val borderColor = NoteColorResolver.border(context, note.color, note.customColorHex)
             val accentColor = NoteColorResolver.accent(context, note.color, note.customColorHex)
 
             val bg = ContextCompat.getDrawable(context, R.drawable.bg_note_card_fill)?.mutate() as? GradientDrawable
             bg?.setColor(bgColor)
-            bg?.setStroke(1.dp(context), borderColor)
             binding.noteCardRoot.background = bg
 
             binding.noteAccent.setBackgroundColor(accentColor)
@@ -120,9 +118,6 @@ class NotesAdapter(
             binding.deleteForeverAction.setOnClickListener { onDeleteForever(note) }
         }
     }
-
-    private fun Int.dp(context: android.content.Context): Int =
-        (this * context.resources.displayMetrics.density).toInt()
 
     private class NoteDiffCallback(
         private val old: List<Note>,
