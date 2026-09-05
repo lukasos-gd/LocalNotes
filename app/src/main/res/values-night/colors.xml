@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="text">#F2F5F8</color>
+    <color name="tint">#8FB9E7</color>
+    <color name="background">#101923</color>
+    <color name="foreground">#F2F5F8</color>
+    <color name="card">#172432</color>
+    <color name="cardForeground">#F2F5F8</color>
+    <color name="primary">#8FB9E7</color>
+    <color name="primaryForeground">#10243C</color>
+    <color name="secondary">#203247</color>
+    <color name="secondaryForeground">#D9E9FA</color>
+    <color name="muted">#1D2B3A</color>
+    <color name="mutedForeground">#A9B6C5</color>
+    <color name="accent">#263E59</color>
+    <color name="accentForeground">#DCEBFA</color>
+    <color name="destructive">#E47D78</color>
+    <color name="destructiveForeground">#281315</color>
+    <color name="border">#2A3B4D</color>
+    <color name="input">#3A4B5D</color>
+    <color name="surface">#14212E</color>
+    <color name="surfaceStrong">#213346</color>
+    <color name="shadow">#40000000</color>
+
+    <color name="note_cream_bg">#3A3422</color>
+    <color name="note_cream_border">#75663A</color>
+    <color name="note_cream_accent">#F3CD64</color>
+
+    <color name="note_blue_bg">#203650</color>
+    <color name="note_blue_border">#426B93</color>
+    <color name="note_blue_accent">#8FC4F7</color>
+
+    <color name="note_sage_bg">#20392A</color>
+    <color name="note_sage_border">#477557</color>
+    <color name="note_sage_accent">#91D6A7</color>
+
+    <color name="note_rose_bg">#452C2E</color>
+    <color name="note_rose_border">#805255</color>
+    <color name="note_rose_accent">#F0A7A2</color>
+
+    <color name="note_lavender_bg">#302849</color>
+    <color name="note_lavender_border">#65588E</color>
+    <color name="note_lavender_accent">#C4B5F5</color>
+
+    <color name="summary_label">#B9CCE3</color>
+    <color name="summary_mark_bg">#26415F</color>
+</resources>

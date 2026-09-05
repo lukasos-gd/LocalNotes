@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base palette (light) -->
+    <color name="text">#152238</color>
+    <color name="tint">#2E5D91</color>
+    <color name="background">#F6F4F0</color>
+    <color name="foreground">#152238</color>
+    <color name="card">#FFFFFF</color>
+    <color name="cardForeground">#152238</color>
+    <color name="primary">#19365F</color>
+    <color name="primaryForeground">#FFFFFF</color>
+    <color name="secondary">#E9EEF5</color>
+    <color name="secondaryForeground">#24466E</color>
+    <color name="muted">#EDF0F3</color>
+    <color name="mutedForeground">#667487</color>
+    <color name="accent">#DCEBFA</color>
+    <color name="accentForeground">#1E4C7B</color>
+    <color name="destructive">#B84D4D</color>
+    <color name="destructiveForeground">#FFFFFF</color>
+    <color name="border">#DDE4EB</color>
+    <color name="input">#CBD7E3</color>
+    <color name="surface">#FDFCF9</color>
+    <color name="surfaceStrong">#E4EAF1</color>
+    <color name="shadow">#1A102A4A</color>
+
+    <!-- Note color palette: cream / blue / sage / rose / lavender -->
+    <color name="note_cream_bg">#FFF9E8</color>
+    <color name="note_cream_border">#F0DFA5</color>
+    <color name="note_cream_accent">#B8871D</color>
+
+    <color name="note_blue_bg">#E8F2FF</color>
+    <color name="note_blue_border">#B5D3F3</color>
+    <color name="note_blue_accent">#3377B8</color>
+
+    <color name="note_sage_bg">#E9F4EC</color>
+    <color name="note_sage_border">#BBDDC5</color>
+    <color name="note_sage_accent">#4B8661</color>
+
+    <color name="note_rose_bg">#FFF0EF</color>
+    <color name="note_rose_border">#F0C4C2</color>
+    <color name="note_rose_accent">#B76561</color>
+
+    <color name="note_lavender_bg">#F2EEFF</color>
+    <color name="note_lavender_border">#D3C6F3</color>
+    <color name="note_lavender_accent">#725CB2</color>
+
+    <!-- Fixed brand colors (used regardless of theme, e.g. on the primary summary card) -->
+    <color name="summary_label">#B9CCE3</color>
+    <color name="summary_mark_bg">#DCEBFA</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+
+    <!-- Adaptive launcher icon background -->
+    <color name="ic_launcher_background">#192644</color>
+</resources>

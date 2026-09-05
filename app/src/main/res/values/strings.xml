@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Local Notes</string>
+
+    <!-- Home -->
+    <string name="eyebrow_home">YOUR PRIVATE SPACE</string>
+    <string name="summary_label">A little room to think</string>
+    <string name="search_hint">Search your notes</string>
+    <string name="filter_all">All notes</string>
+    <string name="filter_pinned">Pinned</string>
+    <string name="filter_archived">Archived</string>
+    <string name="filter_trash">Trash</string>
+    <string name="section_your_notes">Your notes</string>
+    <string name="empty_trash">Empty trash</string>
+    <string name="new_note">New note</string>
+    <string name="untitled_note">Untitled note</string>
+    <string name="no_text_yet">No text yet</string>
+    <string name="empty_title_search">No notes found</string>
+    <string name="empty_title_trash">Trash is empty</string>
+    <string name="empty_title_default">Start with one thought</string>
+    <string name="empty_copy_search">Try a different word or phrase.</string>
+    <string name="empty_copy_default">Capture something small. You can shape it later.</string>
+    <string name="cd_calculator">Open calculator</string>
+    <string name="cd_settings">Open settings</string>
+    <string name="cd_pin">Pin note</string>
+    <string name="cd_unpin">Unpin note</string>
+    <string name="cd_archive">Archive note</string>
+    <string name="cd_unarchive">Move to notes</string>
+    <string name="cd_trash">Move to trash</string>
+    <string name="cd_restore">Restore note</string>
+    <string name="cd_delete_forever">Delete forever</string>
+
+    <!-- Editor -->
+    <string name="editor_title_new">New note</string>
+    <string name="editor_title_edit">Edit note</string>
+    <string name="save">Save</string>
+    <string name="title_hint">Give it a title</string>
+    <string name="body_hint">Start writing…</string>
+    <string name="saved_locally_hint">Saved locally on this device</string>
+    <string name="note_color_label">Note color</string>
+    <string name="privacy_tip">No account, no cloud. Your thoughts stay on your device.</string>
+
+    <!-- Calculator -->
+    <string name="calculator_title">Calculator</string>
+    <string name="calculator_ready">Ready when you are</string>
+    <string name="calculator_helper">A handy little calculator, always offline.</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_eyebrow">PERSONALIZE YOUR SPACE</string>
+    <string name="settings_heading">Make it yours.</string>
+    <string name="settings_subtitle">Small choices that make opening Local Notes feel natural.</string>
+    <string name="section_appearance">Appearance</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="section_sort">Sort notes by</string>
+    <string name="sort_updated">Last edited</string>
+    <string name="sort_created">Date created</string>
+    <string name="sort_title">Title</string>
+    <string name="section_storage">Local file storage</string>
+    <string name="storage_title">Android/media storage</string>
+    <string name="storage_subtitle">notes live as plain-text files in Android/media/notes, settings in Android/media/settings.properties.</string>
+    <string name="storage_granted">Access granted</string>
+    <string name="storage_not_granted">Grant access</string>
+    <string name="about_title">Local Notes</string>
+    <string name="permissions_link">Open Android app settings</string>
+    <string name="storage_permission_rationale">Local Notes needs "All files access" to keep your notes as plain-text files in Android/media/notes, right where you can find them.</string>
+
+    <!-- Note color names -->
+    <string name="color_cream">Butter</string>
+    <string name="color_blue">Sky</string>
+    <string name="color_sage">Sage</string>
+    <string name="color_rose">Rose</string>
+    <string name="color_lavender">Iris</string>
+
+    <!-- Dialogs -->
+    <string name="delete_forever_title">Delete forever?</string>
+    <string name="delete_forever_message">This note will be permanently removed and can\'t be recovered.</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+</resources>
