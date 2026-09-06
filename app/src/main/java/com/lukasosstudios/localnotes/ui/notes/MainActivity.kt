@@ -105,11 +105,27 @@ class MainActivity : AppCompatActivity() {
         if (AppLock.guard(this, settingsRepository, lockLauncher)) return
 
         if (!repository.hasPermission()) {
-            promptForStoragePermission()
+            if (!settingsRepository.storagePromptShown) {
+                settingsRepository.storagePromptShown = true
+                promptForStoragePermission()
+            }
+            renderNoPermissionState()
         } else {
             settingsRepository.loadFromFile(repository)
             reload()
         }
+    }
+
+    private fun renderNoPermissionState() {
+        binding.notesRecyclerView.visibility = View.GONE
+        binding.emptyState.visibility = View.VISIBLE
+        binding.emptyIcon.setImageResource(R.drawable.ic_folder)
+        binding.emptyTitle.text = getString(R.string.empty_title_needs_permission)
+        binding.emptyCopy.text = getString(R.string.empty_copy_needs_permission)
+        binding.emptyState.setOnClickListener { requestStoragePermission() }
+        binding.summaryTitle.text = getString(R.string.storage_not_granted)
+        binding.sectionTitle.text = getString(R.string.section_your_notes)
+        binding.emptyTrashButton.visibility = View.GONE
     }
 
     private fun promptForStoragePermission() {
@@ -183,8 +199,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun emptyTrash() {
-        allNotes.filter { it.isDeleted }.forEach { repository.deleteForever(it) }
-        reload()
+        ConfirmDialog.show(
+            activity = this,
+            title = getString(R.string.empty_trash_confirm_title),
+            message = getString(R.string.empty_trash_confirm_message),
+            icon = R.drawable.ic_trash,
+            destructive = true,
+            positiveLabel = getString(R.string.delete)
+        ) {
+            allNotes.filter { it.isDeleted }.forEach { repository.deleteForever(it) }
+            reload()
+        }
     }
 
     // ---- Multi-select -------------------------------------------------
@@ -198,6 +223,14 @@ class MainActivity : AppCompatActivity() {
         selectionMode = selectedFileNames.isNotEmpty()
         renderSelectionBar()
         adapter.refreshSelectionState()
+    }
+
+    override fun onBackPressed() {
+        if (selectionMode) {
+            exitSelectionMode()
+        } else {
+            super.onBackPressed()
+        }
     }
 
     private fun exitSelectionMode() {
@@ -323,6 +356,7 @@ class MainActivity : AppCompatActivity() {
         binding.emptyState.visibility = if (isEmpty) View.VISIBLE else View.GONE
         binding.notesRecyclerView.visibility = if (isEmpty) View.GONE else View.VISIBLE
         if (isEmpty) {
+            binding.emptyState.setOnClickListener(null)
             binding.emptyIcon.setImageResource(if (currentFilter == NoteFilter.TRASH) R.drawable.ic_trash else R.drawable.ic_edit)
             binding.emptyTitle.text = when {
                 searchQuery.isNotEmpty() -> getString(R.string.empty_title_search)

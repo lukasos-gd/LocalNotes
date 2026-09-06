@@ -20,6 +20,8 @@
     <string name="empty_title_default">No notes yet</string>
     <string name="empty_copy_search">Try a different word or phrase.</string>
     <string name="empty_copy_default">Tap New note to create your first one.</string>
+    <string name="empty_title_needs_permission">Storage access needed</string>
+    <string name="empty_copy_needs_permission">Tap here to grant access so your notes can be saved.</string>
     <string name="cd_calculator">Open calculator</string>
     <string name="cd_settings">Open settings</string>
     <string name="cd_pin">Pin note</string>
@@ -91,6 +93,8 @@
     <string name="trash_action">Move to trash</string>
     <string name="bulk_trash_confirm_title">Move %1$d notes to trash?</string>
     <string name="bulk_trash_confirm_message">You can restore them later from the Trash tab.</string>
+    <string name="empty_trash_confirm_title">Empty trash?</string>
+    <string name="empty_trash_confirm_message">All notes in the trash will be permanently deleted.</string>
 
     <!-- Multi-select -->
     <string name="selection_count">%1$d selected</string>

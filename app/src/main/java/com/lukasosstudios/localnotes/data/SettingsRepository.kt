@@ -33,10 +33,23 @@ class SettingsRepository(context: Context) {
             prefs.edit().putBoolean(KEY_APP_LOCK, value).apply()
         }
 
+    /** Whether we've already shown the one-time storage permission prompt. */
+    var storagePromptShown: Boolean
+        get() = prefs.getBoolean(KEY_STORAGE_PROMPT_SHOWN, false)
+        set(value) {
+            prefs.edit().putBoolean(KEY_STORAGE_PROMPT_SHOWN, value).apply()
+        }
+
     /** Reads Android/media/settings.properties (if present) into the cache. */
     fun loadFromFile(repository: NoteRepository) {
         val file = repository.settingsFile()
-        if (!file.exists()) return
+        if (!file.exists()) {
+            // First time we have permission -- make sure the file exists from the start,
+            // reflecting the current (default) settings, rather than only appearing
+            // the first time the person changes something in the Settings screen.
+            writeToFile(repository, repository.listNotes().size)
+            return
+        }
         try {
             val props = Properties()
             file.inputStream().use { props.load(it) }
@@ -68,5 +81,6 @@ class SettingsRepository(context: Context) {
         private const val KEY_THEME = "theme"
         private const val KEY_SORT = "sort"
         private const val KEY_APP_LOCK = "app_lock"
+        private const val KEY_STORAGE_PROMPT_SHOWN = "storage_prompt_shown"
     }
 }

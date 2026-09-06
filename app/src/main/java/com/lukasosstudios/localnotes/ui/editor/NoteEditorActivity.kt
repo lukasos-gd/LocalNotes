@@ -84,6 +84,14 @@ class NoteEditorActivity : AppCompatActivity() {
 
         binding.backButton.setOnClickListener { save() }
         binding.saveButton.setOnClickListener { save() }
+
+        if (isNew) {
+            binding.titleInput.requestFocus()
+            binding.titleInput.post {
+                val imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+                imm.showSoftInput(binding.titleInput, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT)
+            }
+        }
     }
 
     override fun onResume() {

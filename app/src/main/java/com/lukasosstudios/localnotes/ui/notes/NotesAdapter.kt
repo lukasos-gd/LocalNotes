@@ -107,7 +107,8 @@ class NotesAdapter(
             binding.noteCardRoot.setOnClickListener {
                 if (isSelectionMode()) onLongPress(note) else onOpen(note)
             }
-            binding.noteCardRoot.setOnLongClickListener {
+            binding.noteCardRoot.setOnLongClickListener { view ->
+                view.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS)
                 onLongPress(note)
                 true
             }
