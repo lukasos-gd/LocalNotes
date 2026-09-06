@@ -110,6 +110,7 @@ class LockActivity : AppCompatActivity() {
         val promptInfo = BiometricPrompt.PromptInfo.Builder()
             .setTitle(getString(R.string.lock_prompt_title))
             .setAllowedAuthenticators(allowedAuthenticators)
+            .setNegativeButtonText(getString(R.string.cancel))
             .build()
 
         prompt.authenticate(promptInfo)
