@@ -42,25 +42,29 @@
     <color name="note_lavender_border">#65588E</color>
     <color name="note_lavender_accent">#C4B5F5</color>
 
-    <color name="note_peach_bg">#432E1E</color>
-    <color name="note_peach_border">#7D5732</color>
-    <color name="note_peach_accent">#F0A868</color>
+    <color name="note_peach_bg">#402C18</color>
+    <color name="note_peach_border">#7A5530</color>
+    <color name="note_peach_accent">#F0A855</color>
 
-    <color name="note_mint_bg">#1B3A2F</color>
-    <color name="note_mint_border">#3E7A5F</color>
-    <color name="note_mint_accent">#7FDCB4</color>
+    <color name="note_mint_bg">#163632</color>
+    <color name="note_mint_border">#2F6B63</color>
+    <color name="note_mint_accent">#6FDBCF</color>
 
     <color name="note_slate_bg">#28303D</color>
     <color name="note_slate_border">#4E5D71</color>
     <color name="note_slate_accent">#AEBED4</color>
 
-    <color name="note_sun_bg">#3D3520</color>
-    <color name="note_sun_border">#78682F</color>
-    <color name="note_sun_accent">#F0D375</color>
+    <color name="note_sun_bg">#3D3510</color>
+    <color name="note_sun_border">#786A28</color>
+    <color name="note_sun_accent">#F0D34A</color>
 
-    <color name="note_coral_bg">#402424</color>
-    <color name="note_coral_border">#7A4646</color>
-    <color name="note_coral_accent">#F09B9B</color>
+    <color name="note_ocean_bg">#163038</color>
+    <color name="note_ocean_border">#35707F</color>
+    <color name="note_ocean_accent">#7FD2E3</color>
+
+    <color name="note_plum_bg">#331F2C</color>
+    <color name="note_plum_border">#6B3D58</color>
+    <color name="note_plum_accent">#E3A8C9</color>
 
     <color name="summary_label">#B9CCE3</color>
     <color name="summary_mark_bg">#26415F</color>

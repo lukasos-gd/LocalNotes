@@ -77,7 +77,8 @@
     <string name="color_mint">Mint</string>
     <string name="color_slate">Slate</string>
     <string name="color_sun">Sun</string>
-    <string name="color_coral">Coral</string>
+    <string name="color_ocean">Ocean</string>
+    <string name="color_plum">Plum</string>
     <string name="color_custom">Custom</string>
 
     <!-- Dialogs -->
@@ -130,4 +131,23 @@
     <string name="lock_screen_subtitle">Authenticate to continue.</string>
     <string name="unlock_button">Unlock</string>
     <string name="lock_prompt_title">Unlock Local Notes</string>
+    <string name="use_pin_instead">Use PIN instead</string>
+    <string name="use_fingerprint_instead">Use fingerprint instead</string>
+    <string name="enter_pin_title">Enter your PIN</string>
+    <string name="pin_incorrect">That PIN didn\'t match. Try again.</string>
+
+    <!-- PIN setup -->
+    <string name="pin_setup_title">App PIN</string>
+    <string name="pin_setup_enter_new">Enter a new PIN</string>
+    <string name="pin_setup_confirm">Confirm your PIN</string>
+    <string name="pin_setup_mismatch">Those didn\'t match. Start over.</string>
+    <string name="pin_setup_too_short">Use at least 4 digits.</string>
+    <string name="pin_row_title">App PIN</string>
+    <string name="pin_row_subtitle_set">Used as a fallback if your fingerprint doesn\'t work.</string>
+    <string name="pin_row_subtitle_unset">Optional fallback for when your fingerprint doesn\'t work.</string>
+    <string name="pin_set_badge">Set</string>
+    <string name="pin_not_set_badge">Not set</string>
+    <string name="remove_pin_title">Remove app PIN?</string>
+    <string name="remove_pin_message">You\'ll only be able to unlock with your fingerprint after this.</string>
+    <string name="remove_action">Remove</string>
 </resources>

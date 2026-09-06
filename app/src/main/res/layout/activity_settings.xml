@@ -221,53 +221,136 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
                 android:background="@drawable/bg_storage_card"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="18dp">
-
-                <FrameLayout
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:background="@drawable/bg_storage_icon">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_lock"
-                        app:tint="@color/secondaryForeground" />
-                </FrameLayout>
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="12dp"
-                    android:orientation="vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="18dp">
 
-                    <TextView
+                    <FrameLayout
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:background="@drawable/bg_storage_icon">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_lock"
+                            app:tint="@color/secondaryForeground" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="12dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:textStyle="bold"
+                            android:text="@string/app_lock_title"
+                            android:textColor="@color/foreground"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:text="@string/app_lock_subtitle"
+                            android:textColor="@color/mutedForeground"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/appLockSwitch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif"
-                        android:textStyle="bold"
-                        android:text="@string/app_lock_title"
-                        android:textColor="@color/foreground"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:text="@string/app_lock_subtitle"
-                        android:textColor="@color/mutedForeground"
-                        android:textSize="12sp" />
+                        android:layout_marginStart="8dp" />
                 </LinearLayout>
 
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/appLockSwitch"
-                    android:layout_width="wrap_content"
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginEnd="18dp"
+                    android:background="@color/border" />
+
+                <LinearLayout
+                    android:id="@+id/pinRow"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp" />
+                    android:background="@drawable/bg_option_row"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="18dp">
+
+                    <FrameLayout
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:background="@drawable/bg_storage_icon">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_keypad"
+                            app:tint="@color/secondaryForeground" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="12dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:textStyle="bold"
+                            android:text="@string/pin_row_title"
+                            android:textColor="@color/foreground"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/pinRowSubtitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:text="@string/pin_row_subtitle_unset"
+                            android:textColor="@color/mutedForeground"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/pinRowBadge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="@color/mutedForeground"
+                        android:textSize="12sp" />
+
+                    <ImageButton
+                        android:id="@+id/pinRemoveButton"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="4dp"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="@string/remove_action"
+                        android:padding="6dp"
+                        android:src="@drawable/ic_trash"
+                        android:visibility="gone"
+                        app:tint="@color/destructive" />
+                </LinearLayout>
             </LinearLayout>
 
             <!-- Backup & restore -->

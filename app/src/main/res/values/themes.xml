@@ -49,4 +49,28 @@
         <item name="android:scaleType">fitCenter</item>
     </style>
 
+    <style name="Widget.PinKey" parent="">
+        <item name="android:layout_width">72dp</item>
+        <item name="android:layout_height">72dp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:background">@drawable/bg_pin_key</item>
+        <item name="android:gravity">center</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+    <style name="Widget.PinKeyButton" parent="">
+        <item name="android:layout_width">72dp</item>
+        <item name="android:layout_height">72dp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:background">@drawable/bg_pin_key</item>
+        <item name="android:padding">22dp</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:tint">@color/white</item>
+    </style>
+
 </resources>

@@ -44,26 +44,30 @@
     <color name="note_lavender_border">#D3C6F3</color>
     <color name="note_lavender_accent">#725CB2</color>
 
-    <!-- Extra presets: peach / mint / slate / sun / coral -->
-    <color name="note_peach_bg">#FFEFE2</color>
-    <color name="note_peach_border">#F1CBA6</color>
-    <color name="note_peach_accent">#BD7233</color>
+    <!-- Extra presets: peach / mint / slate / sun / ocean / plum -->
+    <color name="note_peach_bg">#FFEEDD</color>
+    <color name="note_peach_border">#F0C48A</color>
+    <color name="note_peach_accent">#C2751A</color>
 
-    <color name="note_mint_bg">#E7F7F1</color>
-    <color name="note_mint_border">#AFE0CC</color>
-    <color name="note_mint_accent">#2E8F6C</color>
+    <color name="note_mint_bg">#E3F7F5</color>
+    <color name="note_mint_border">#A8DFDA</color>
+    <color name="note_mint_accent">#1F8F86</color>
 
     <color name="note_slate_bg">#EBEEF2</color>
     <color name="note_slate_border">#C6CEDA</color>
     <color name="note_slate_accent">#4C5C74</color>
 
-    <color name="note_sun_bg">#FFF6DC</color>
-    <color name="note_sun_border">#F1DE9B</color>
-    <color name="note_sun_accent">#B08A1A</color>
+    <color name="note_sun_bg">#FFF4C2</color>
+    <color name="note_sun_border">#EAD672</color>
+    <color name="note_sun_accent">#A8811A</color>
 
-    <color name="note_coral_bg">#FFEAEA</color>
-    <color name="note_coral_border">#F4B9B9</color>
-    <color name="note_coral_accent">#C24E4E</color>
+    <color name="note_ocean_bg">#DCEEF2</color>
+    <color name="note_ocean_border">#93C7D2</color>
+    <color name="note_ocean_accent">#1F6B7D</color>
+
+    <color name="note_plum_bg">#F5E9F2</color>
+    <color name="note_plum_border">#D9AFCB</color>
+    <color name="note_plum_accent">#8C3D6B</color>
 
     <!-- Fixed brand colors (used regardless of theme, e.g. on the primary summary card) -->
     <color name="summary_label">#B9CCE3</color>
@@ -74,4 +78,6 @@
 
     <!-- Adaptive launcher icon background -->
     <color name="ic_launcher_background">#09193E</color>
+    <color name="lock_background">#0B1524</color>
+    <color name="lock_surface">#16233A</color>
 </resources>

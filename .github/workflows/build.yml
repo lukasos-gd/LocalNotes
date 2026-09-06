@@ -26,20 +26,23 @@ jobs:
         with:
           gradle-version: "8.7"
 
-      - name: Assemble debug APK
-        run: gradle assembleDebug --no-daemon --stacktrace
+      - name: Assemble debug, signed release, and unsigned release APKs
+        run: gradle assembleDebug assembleRelease assembleReleaseUnsigned --no-daemon --stacktrace
 
-      - name: Assemble release APK (unsigned)
-        run: gradle assembleRelease --no-daemon --stacktrace
-
-      - name: Upload debug APK
+      - name: Upload signed debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: local-notes-debug
+          name: local-notes-debug-signed
           path: app/build/outputs/apk/debug/*.apk
 
-      - name: Upload release APK
+      - name: Upload signed release APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: local-notes-release-signed
+          path: app/build/outputs/apk/release/*.apk
+
+      - name: Upload unsigned release APK
         uses: actions/upload-artifact@v4
         with:
           name: local-notes-release-unsigned
-          path: app/build/outputs/apk/release/*.apk
+          path: app/build/outputs/apk/releaseUnsigned/*.apk

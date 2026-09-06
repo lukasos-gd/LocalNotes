@@ -1,67 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary"
-    android:fitsSystemWindows="true"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="32dp">
+    android:background="@color/lock_background"
+    android:fitsSystemWindows="true">
 
-    <FrameLayout
-        android:layout_width="76dp"
-        android:layout_height="76dp"
-        android:layout_marginBottom="22dp"
-        android:background="@drawable/bg_summary_mark">
-
-        <ImageView
-            android:layout_width="34dp"
-            android:layout_height="34dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_lock"
-            app:tint="@color/primary" />
-    </FrameLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:text="@string/lock_screen_title"
-        android:textColor="@color/white"
-        android:textSize="20sp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="28dp"
-        android:gravity="center"
-        android:text="@string/lock_screen_subtitle"
-        android:textColor="@color/summary_label"
-        android:textSize="14sp" />
-
+    <!-- Biometric prompt view -->
     <LinearLayout
-        android:id="@+id/unlockButton"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:background="@drawable/bg_save_button"
-        android:backgroundTint="@color/summary_mark_bg"
+        android:id="@+id/biometricSection"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingStart="24dp"
-        android:paddingEnd="24dp">
+        android:orientation="vertical"
+        android:padding="32dp">
+
+        <FrameLayout
+            android:layout_width="76dp"
+            android:layout_height="76dp"
+            android:layout_marginBottom="22dp"
+            android:background="@drawable/bg_lock_mark">
+
+            <ImageView
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_lock"
+                app:tint="@color/white" />
+        </FrameLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
             android:textStyle="bold"
-            android:text="@string/unlock_button"
-            android:textColor="@color/primary"
+            android:gravity="center"
+            android:text="@string/lock_screen_title"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="28dp"
+            android:gravity="center"
+            android:text="@string/lock_screen_subtitle"
+            android:textColor="@color/summary_label"
             android:textSize="14sp" />
+
+        <LinearLayout
+            android:id="@+id/unlockButton"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginBottom="14dp"
+            android:background="@drawable/bg_lock_button"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:textStyle="bold"
+                android:text="@string/unlock_button"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/usePinButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/use_pin_instead"
+            android:textColor="@color/summary_label"
+            android:textSize="13sp"
+            android:visibility="gone" />
     </LinearLayout>
 
-</LinearLayout>
+    <!-- PIN entry view -->
+    <LinearLayout
+        android:id="@+id/pinSection"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="32dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="sans-serif"
+            android:textStyle="bold"
+            android:text="@string/enter_pin_title"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:id="@+id/pinDotsRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:minHeight="16dp"
+            android:orientation="horizontal" />
+
+        <TextView
+            android:id="@+id/pinErrorText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="18dp"
+            android:text="@string/pin_incorrect"
+            android:textColor="@color/note_rose_accent"
+            android:textSize="12sp"
+            android:visibility="invisible" />
+
+        <include
+            android:id="@+id/keypad"
+            layout="@layout/include_numeric_keypad" />
+
+        <TextView
+            android:id="@+id/useFingerprintButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:padding="10dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/use_fingerprint_instead"
+            android:textColor="@color/summary_label"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+</FrameLayout>

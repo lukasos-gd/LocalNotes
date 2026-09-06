@@ -27,7 +27,8 @@ enum class NoteColor(
     MINT("mint", R.color.note_mint_bg, R.color.note_mint_border, R.color.note_mint_accent, R.string.color_mint),
     SLATE("slate", R.color.note_slate_bg, R.color.note_slate_border, R.color.note_slate_accent, R.string.color_slate),
     SUN("sun", R.color.note_sun_bg, R.color.note_sun_border, R.color.note_sun_accent, R.string.color_sun),
-    CORAL("coral", R.color.note_coral_bg, R.color.note_coral_border, R.color.note_coral_accent, R.string.color_coral),
+    OCEAN("ocean", R.color.note_ocean_bg, R.color.note_ocean_border, R.color.note_ocean_accent, R.string.color_ocean),
+    PLUM("plum", R.color.note_plum_bg, R.color.note_plum_border, R.color.note_plum_accent, R.string.color_plum),
 
     /** backgroundRes/borderRes/accentRes are unused for CUSTOM -- resolve via NoteColorResolver. */
     CUSTOM("custom", 0, 0, 0, R.string.color_custom);

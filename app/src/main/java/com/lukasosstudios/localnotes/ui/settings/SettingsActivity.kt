@@ -1,7 +1,6 @@
 package com.lukasosstudios.localnotes.ui.settings
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -13,7 +12,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
-import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.lukasosstudios.localnotes.R
@@ -24,8 +22,12 @@ import com.lukasosstudios.localnotes.databinding.ActivitySettingsBinding
 import com.lukasosstudios.localnotes.databinding.ItemOptionRowBinding
 import com.lukasosstudios.localnotes.model.SortMode
 import com.lukasosstudios.localnotes.model.ThemeMode
+import com.lukasosstudios.localnotes.ui.common.ConfirmDialog
+import com.lukasosstudios.localnotes.ui.security.LockActivity
+import com.lukasosstudios.localnotes.ui.security.PinSetupActivity
 import com.lukasosstudios.localnotes.util.AppLock
 import com.lukasosstudios.localnotes.util.AppLockState
+import com.lukasosstudios.localnotes.util.PinManager
 import com.lukasosstudios.localnotes.util.ThemeUtils
 
 class SettingsActivity : AppCompatActivity() {
@@ -34,11 +36,26 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var repository: NoteRepository
     private lateinit var settings: SettingsRepository
     private lateinit var backupManager: BackupManager
+    private lateinit var pinManager: PinManager
 
     private var pendingImportUri: Uri? = null
 
     private val lockLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode != Activity.RESULT_OK) finish()
+    }
+
+    private val verifyToDisableLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            settings.appLockEnabled = false
+            settings.writeToFile(repository, repository.listNotes().size)
+        }
+        renderAppLockSwitch()
+    }
+
+    private val pinSetupLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            renderPinRow()
+        }
     }
 
     private val importPicker = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
@@ -53,6 +70,7 @@ class SettingsActivity : AppCompatActivity() {
         repository = NoteRepository(this)
         settings = SettingsRepository(this)
         backupManager = BackupManager(this, repository)
+        pinManager = PinManager(this)
         settings.loadFromFile(repository)
 
         binding.backButton.setOnClickListener { finish() }
@@ -67,10 +85,13 @@ class SettingsActivity : AppCompatActivity() {
         buildSortOptions()
         renderStorageStatus()
         renderAppLockSwitch()
+        renderPinRow()
 
         binding.storageActionButton.setOnClickListener { requestStoragePermission() }
         binding.exportRow.setOnClickListener { exportBackup() }
         binding.importRow.setOnClickListener { importPicker.launch(arrayOf("application/zip", "application/octet-stream")) }
+        binding.pinRow.setOnClickListener { pinSetupLauncher.launch(Intent(this, PinSetupActivity::class.java)) }
+        binding.pinRemoveButton.setOnClickListener { confirmRemovePin() }
     }
 
     override fun onResume() {
@@ -166,8 +187,7 @@ class SettingsActivity : AppCompatActivity() {
         binding.appLockSwitch.setOnCheckedChangeListener { _, checked ->
             if (checked) {
                 val manager = BiometricManager.from(this)
-                val allowed = BiometricManager.Authenticators.BIOMETRIC_WEAK or BiometricManager.Authenticators.DEVICE_CREDENTIAL
-                if (manager.canAuthenticate(allowed) != BiometricManager.BIOMETRIC_SUCCESS) {
+                if (manager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK) != BiometricManager.BIOMETRIC_SUCCESS) {
                     Toast.makeText(this, R.string.app_lock_unavailable, Toast.LENGTH_LONG).show()
                     renderAppLockSwitch()
                     return@setOnCheckedChangeListener
@@ -177,43 +197,34 @@ class SettingsActivity : AppCompatActivity() {
                 AppLockState.unlocked = true
             } else {
                 // Disabling protection requires proving it's really you first --
-                // revert the switch now and only apply the change on success.
+                // revert the switch now and only apply the change if verification succeeds.
                 renderAppLockSwitch()
-                requestDisableAppLock()
+                verifyToDisableLauncher.launch(Intent(this, LockActivity::class.java))
             }
         }
     }
 
-    private fun requestDisableAppLock() {
-        val manager = BiometricManager.from(this)
-        val allowed = BiometricManager.Authenticators.BIOMETRIC_WEAK or BiometricManager.Authenticators.DEVICE_CREDENTIAL
-        if (manager.canAuthenticate(allowed) != BiometricManager.BIOMETRIC_SUCCESS) {
-            // Nothing to verify against anymore -- let it turn off rather than lock the person out.
-            settings.appLockEnabled = false
-            settings.writeToFile(repository, repository.listNotes().size)
-            renderAppLockSwitch()
-            return
+    // ---- App PIN -----------------------------------------------------------
+
+    private fun renderPinRow() {
+        val hasPin = pinManager.hasPin()
+        binding.pinRowBadge.text = getString(if (hasPin) R.string.pin_set_badge else R.string.pin_not_set_badge)
+        binding.pinRowSubtitle.text = getString(if (hasPin) R.string.pin_row_subtitle_set else R.string.pin_row_subtitle_unset)
+        binding.pinRemoveButton.visibility = if (hasPin) View.VISIBLE else View.GONE
+    }
+
+    private fun confirmRemovePin() {
+        ConfirmDialog.show(
+            activity = this,
+            title = getString(R.string.remove_pin_title),
+            message = getString(R.string.remove_pin_message),
+            icon = R.drawable.ic_keypad,
+            destructive = true,
+            positiveLabel = getString(R.string.remove_action)
+        ) {
+            pinManager.clearPin()
+            renderPinRow()
         }
-
-        val executor = ContextCompat.getMainExecutor(this)
-        val prompt = BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
-            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                settings.appLockEnabled = false
-                settings.writeToFile(repository, repository.listNotes().size)
-                renderAppLockSwitch()
-            }
-
-            override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-                // Cancelled or failed -- leave app lock enabled, switch already reverted.
-            }
-        })
-
-        val promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle(getString(R.string.lock_prompt_title))
-            .setAllowedAuthenticators(allowed)
-            .build()
-
-        prompt.authenticate(promptInfo)
     }
 
     // ---- Backup & restore --------------------------------------------------
@@ -239,18 +250,19 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun confirmImport(uri: Uri) {
         pendingImportUri = uri
-        AlertDialog.Builder(this)
-            .setTitle(R.string.backup_import_confirm_title)
-            .setMessage(R.string.backup_import_confirm_message)
-            .setNegativeButton(R.string.cancel, null)
-            .setPositiveButton(R.string.import_action) { _, _ ->
-                val success = pendingImportUri?.let { backupManager.import(it) } ?: false
-                Toast.makeText(
-                    this,
-                    if (success) R.string.backup_import_success else R.string.backup_import_failed,
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-            .show()
+        ConfirmDialog.show(
+            activity = this,
+            title = getString(R.string.backup_import_confirm_title),
+            message = getString(R.string.backup_import_confirm_message),
+            icon = R.drawable.ic_import,
+            positiveLabel = getString(R.string.import_action)
+        ) {
+            val success = pendingImportUri?.let { backupManager.import(it) } ?: false
+            Toast.makeText(
+                this,
+                if (success) R.string.backup_import_success else R.string.backup_import_failed,
+                Toast.LENGTH_LONG
+            ).show()
+        }
     }
 }

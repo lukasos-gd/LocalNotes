@@ -1,7 +1,6 @@
 package com.lukasosstudios.localnotes.ui.notes
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -24,6 +23,7 @@ import com.lukasosstudios.localnotes.model.Note
 import com.lukasosstudios.localnotes.model.NoteFilter
 import com.lukasosstudios.localnotes.model.SortMode
 import com.lukasosstudios.localnotes.ui.calculator.CalculatorActivity
+import com.lukasosstudios.localnotes.ui.common.ConfirmDialog
 import com.lukasosstudios.localnotes.ui.editor.NoteEditorActivity
 import com.lukasosstudios.localnotes.ui.settings.SettingsActivity
 import com.lukasosstudios.localnotes.util.AppLock
@@ -113,12 +113,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun promptForStoragePermission() {
-        AlertDialog.Builder(this)
-            .setTitle(R.string.storage_not_granted)
-            .setMessage(R.string.storage_permission_rationale)
-            .setCancelable(false)
-            .setPositiveButton(R.string.storage_not_granted) { _, _ -> requestStoragePermission() }
-            .show()
+        ConfirmDialog.show(
+            activity = this,
+            title = getString(R.string.storage_not_granted),
+            message = getString(R.string.storage_permission_rationale),
+            icon = R.drawable.ic_folder,
+            positiveLabel = getString(R.string.storage_not_granted),
+            negativeLabel = null,
+            cancelable = false
+        ) { requestStoragePermission() }
     }
 
     private fun requestStoragePermission() {
@@ -154,26 +157,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun confirmDeleteForever(note: Note) {
-        AlertDialog.Builder(this)
-            .setTitle(R.string.delete_forever_title)
-            .setMessage(R.string.delete_forever_message)
-            .setNegativeButton(R.string.cancel, null)
-            .setPositiveButton(R.string.delete) { _, _ ->
-                repository.deleteForever(note)
-                reload()
-            }
-            .show()
+        ConfirmDialog.show(
+            activity = this,
+            title = getString(R.string.delete_forever_title),
+            message = getString(R.string.delete_forever_message),
+            icon = R.drawable.ic_trash,
+            destructive = true,
+            positiveLabel = getString(R.string.delete)
+        ) {
+            repository.deleteForever(note)
+            reload()
+        }
     }
 
     private fun confirmTrash(note: Note) {
-        AlertDialog.Builder(this)
-            .setTitle(R.string.trash_confirm_title)
-            .setMessage(R.string.trash_confirm_message)
-            .setNegativeButton(R.string.cancel, null)
-            .setPositiveButton(R.string.trash_action) { _, _ ->
-                mutate(note.copy(isDeleted = true, isArchived = false))
-            }
-            .show()
+        ConfirmDialog.show(
+            activity = this,
+            title = getString(R.string.trash_confirm_title),
+            message = getString(R.string.trash_confirm_message),
+            icon = R.drawable.ic_trash,
+            positiveLabel = getString(R.string.trash_action)
+        ) {
+            mutate(note.copy(isDeleted = true, isArchived = false))
+        }
     }
 
     private fun emptyTrash() {
@@ -240,29 +246,32 @@ class MainActivity : AppCompatActivity() {
     private fun bulkTrashOrDeleteForever() {
         val count = selectedFileNames.size
         if (currentFilter == NoteFilter.TRASH) {
-            AlertDialog.Builder(this)
-                .setTitle(getString(R.string.bulk_delete_forever_title, count))
-                .setMessage(R.string.bulk_delete_forever_message)
-                .setNegativeButton(R.string.cancel, null)
-                .setPositiveButton(R.string.delete) { _, _ ->
-                    selectedNotes().forEach { repository.deleteForever(it) }
-                    exitSelectionMode()
-                    reload()
-                }
-                .show()
+            ConfirmDialog.show(
+                activity = this,
+                title = getString(R.string.bulk_delete_forever_title, count),
+                message = getString(R.string.bulk_delete_forever_message),
+                icon = R.drawable.ic_trash,
+                destructive = true,
+                positiveLabel = getString(R.string.delete)
+            ) {
+                selectedNotes().forEach { repository.deleteForever(it) }
+                exitSelectionMode()
+                reload()
+            }
         } else {
-            AlertDialog.Builder(this)
-                .setTitle(getString(R.string.bulk_trash_confirm_title, count))
-                .setMessage(R.string.bulk_trash_confirm_message)
-                .setNegativeButton(R.string.cancel, null)
-                .setPositiveButton(R.string.trash_action) { _, _ ->
-                    selectedNotes().forEach {
-                        repository.saveNote(it.copy(isDeleted = true, isArchived = false, isPinned = false, updatedAt = System.currentTimeMillis()))
-                    }
-                    exitSelectionMode()
-                    reload()
+            ConfirmDialog.show(
+                activity = this,
+                title = getString(R.string.bulk_trash_confirm_title, count),
+                message = getString(R.string.bulk_trash_confirm_message),
+                icon = R.drawable.ic_trash,
+                positiveLabel = getString(R.string.trash_action)
+            ) {
+                selectedNotes().forEach {
+                    repository.saveNote(it.copy(isDeleted = true, isArchived = false, isPinned = false, updatedAt = System.currentTimeMillis()))
                 }
-                .show()
+                exitSelectionMode()
+                reload()
+            }
         }
     }
 

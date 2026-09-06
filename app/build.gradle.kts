@@ -17,14 +17,29 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file("keystore/release.keystore")
+            storePassword = "localnotes2026"
+            keyAlias = "localnotes"
+            keyPassword = "localnotes2026"
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.getByName("release")
         }
         debug {
             isMinifyEnabled = false
+        }
+        create("releaseUnsigned") {
+            initWith(getByName("release"))
+            signingConfig = null
+            matchingFallbacks += listOf("release")
         }
     }
 
