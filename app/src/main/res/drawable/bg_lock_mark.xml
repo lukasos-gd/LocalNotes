@@ -1,0 +1,4 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/lock_surface"/>
+    <corners android:radius="17dp"/>
+</shape>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="18dp"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
+        android:text="@string/custom_color_title"
+        android:textColor="@color/foreground"
+        android:textSize="17sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="54dp"
+            android:layout_height="54dp">
+
+            <View
+                android:id="@+id/colorPreview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_swatch" />
+        </FrameLayout>
+
+        <EditText
+            android:id="@+id/hexInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/bg_search_box"
+            android:fontFamily="monospace"
+            android:hint="@string/custom_color_hex_hint"
+            android:inputType="textCapCharacters"
+            android:maxLength="7"
+            android:paddingStart="14dp"
+            android:paddingTop="12dp"
+            android:paddingEnd="14dp"
+            android:paddingBottom="12dp"
+            android:textColor="@color/foreground"
+            android:textColorHint="@color/mutedForeground"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="R"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/mutedForeground"
+        android:textSize="12sp" />
+    <SeekBar
+        android:id="@+id/redSeek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="255" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="G"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/mutedForeground"
+        android:textSize="12sp" />
+    <SeekBar
+        android:id="@+id/greenSeek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="255" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="B"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/mutedForeground"
+        android:textSize="12sp" />
+    <SeekBar
+        android:id="@+id/blueSeek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="255"
+        android:layout_marginBottom="20dp" />
+
+    <LinearLayout
+        android:id="@+id/useColorButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/bg_save_button"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:textStyle="bold"
+            android:text="@string/use_color"
+            android:textColor="@color/primaryForeground"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+</LinearLayout>

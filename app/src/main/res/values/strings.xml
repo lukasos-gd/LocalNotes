@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Local Notes</string>
+
+    <!-- Home -->
+    <string name="eyebrow_home">STORED ON THIS DEVICE</string>
+    <string name="summary_label">Total notes</string>
+    <string name="search_hint">Search your notes</string>
+    <string name="filter_all">All notes</string>
+    <string name="filter_pinned">Pinned</string>
+    <string name="filter_archived">Archived</string>
+    <string name="filter_trash">Trash</string>
+    <string name="section_your_notes">Your notes</string>
+    <string name="empty_trash">Empty trash</string>
+    <string name="new_note">New note</string>
+    <string name="untitled_note">Untitled note</string>
+    <string name="no_text_yet">No text yet</string>
+    <string name="empty_title_search">No notes found</string>
+    <string name="empty_title_trash">Trash is empty</string>
+    <string name="empty_title_default">No notes yet</string>
+    <string name="empty_copy_search">Try a different word or phrase.</string>
+    <string name="empty_copy_default">Tap New note to create your first one.</string>
+    <string name="empty_title_needs_permission">Storage access needed</string>
+    <string name="empty_copy_needs_permission">Tap here to grant access so your notes can be saved.</string>
+    <string name="cd_calculator">Open calculator</string>
+    <string name="cd_settings">Open settings</string>
+    <string name="cd_pin">Pin note</string>
+    <string name="cd_unpin">Unpin note</string>
+    <string name="cd_archive">Archive note</string>
+    <string name="cd_unarchive">Move to notes</string>
+    <string name="cd_trash">Move to trash</string>
+    <string name="cd_restore">Restore note</string>
+    <string name="cd_delete_forever">Delete forever</string>
+
+    <!-- Editor -->
+    <string name="editor_title_new">New note</string>
+    <string name="editor_title_edit">Edit note</string>
+    <string name="save">Save</string>
+    <string name="title_hint">Give it a title</string>
+    <string name="body_hint">Start writing…</string>
+    <string name="saved_locally_hint">Saved locally on this device</string>
+    <string name="note_color_label">Note color</string>
+    <string name="privacy_tip">No account or cloud sync. This note is stored only on your device.</string>
+
+    <!-- Calculator -->
+    <string name="calculator_title">Calculator</string>
+    <string name="calculator_ready">Enter a calculation</string>
+    <string name="calculator_helper">Works fully offline, same as the rest of the app.</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_eyebrow">APP SETTINGS</string>
+    <string name="settings_heading">Settings</string>
+    <string name="settings_subtitle">Theme, sort order, backups, and app lock.</string>
+    <string name="section_appearance">Appearance</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="section_sort">Sort notes by</string>
+    <string name="sort_updated">Last edited</string>
+    <string name="sort_created">Date created</string>
+    <string name="sort_title">Title</string>
+    <string name="section_storage">Local file storage</string>
+    <string name="storage_title">Android/media storage</string>
+    <string name="storage_subtitle">notes live as plain-text files in Android/media/com.lukasosstudios.localnotes/notes, settings in the same folder\'s settings.properties.</string>
+    <string name="storage_granted">Access granted</string>
+    <string name="storage_not_granted">Grant access</string>
+    <string name="about_title">Local Notes</string>
+    <string name="permissions_link">Open Android app settings</string>
+    <string name="storage_permission_rationale">Local Notes needs "All files access" to keep your notes as plain-text files in Android/media/notes, right where you can find them.</string>
+
+    <!-- Note color names -->
+    <string name="color_cream">Butter</string>
+    <string name="color_blue">Sky</string>
+    <string name="color_sage">Sage</string>
+    <string name="color_rose">Rose</string>
+    <string name="color_lavender">Iris</string>
+    <string name="color_peach">Peach</string>
+    <string name="color_mint">Mint</string>
+    <string name="color_slate">Slate</string>
+    <string name="color_sun">Sun</string>
+    <string name="color_ocean">Ocean</string>
+    <string name="color_plum">Plum</string>
+    <string name="color_custom">Custom</string>
+
+    <!-- Dialogs -->
+    <string name="delete_forever_title">Delete forever?</string>
+    <string name="delete_forever_message">This note will be permanently removed and can\'t be recovered.</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="trash_confirm_title">Move to trash?</string>
+    <string name="trash_confirm_message">You can restore it later from the Trash tab.</string>
+    <string name="trash_action">Move to trash</string>
+    <string name="bulk_trash_confirm_title">Move %1$d notes to trash?</string>
+    <string name="bulk_trash_confirm_message">You can restore them later from the Trash tab.</string>
+    <string name="empty_trash_confirm_title">Empty trash?</string>
+    <string name="empty_trash_confirm_message">All notes in the trash will be permanently deleted.</string>
+
+    <!-- Multi-select -->
+    <string name="selection_count">%1$d selected</string>
+    <string name="cd_select_cancel">Cancel selection</string>
+    <string name="cd_bulk_pin">Pin selected</string>
+    <string name="cd_bulk_archive">Archive selected</string>
+    <string name="cd_bulk_trash">Trash selected</string>
+    <string name="cd_bulk_restore">Restore selected</string>
+    <string name="cd_bulk_delete_forever">Delete selected forever</string>
+    <string name="bulk_delete_forever_title">Delete %1$d notes forever?</string>
+    <string name="bulk_delete_forever_message">These notes will be permanently removed and can\'t be recovered.</string>
+
+    <!-- Custom color picker -->
+    <string name="custom_color_title">Pick a custom color</string>
+    <string name="custom_color_hex_hint">#RRGGBB</string>
+    <string name="use_color">Use this color</string>
+
+    <!-- Backup / restore -->
+    <string name="section_backup">Backup &amp; restore</string>
+    <string name="backup_export_title">Export backup</string>
+    <string name="backup_export_subtitle">Saves a .zip of every note and your settings.</string>
+    <string name="backup_import_title">Import backup</string>
+    <string name="backup_import_subtitle">Restores notes and settings from a backup .zip.</string>
+    <string name="backup_export_success">Backup saved, choose where to send it</string>
+    <string name="backup_export_failed">Couldn\'t create the backup</string>
+    <string name="backup_import_success">Backup restored</string>
+    <string name="backup_import_failed">Couldn\'t read that backup file</string>
+    <string name="backup_import_confirm_title">Import this backup?</string>
+    <string name="backup_import_confirm_message">This adds the notes from the backup to your current notes. Notes with the same file name will be overwritten.</string>
+    <string name="import_action">Import</string>
+
+    <!-- App lock -->
+    <string name="section_security">Security</string>
+    <string name="app_lock_title">Lock Local Notes</string>
+    <string name="app_lock_subtitle">Require your fingerprint, face, or device PIN to open the app.</string>
+    <string name="app_lock_unavailable">Set up a screen lock (PIN, pattern, or fingerprint) on your device first.</string>
+    <string name="lock_screen_title">Local Notes is locked</string>
+    <string name="lock_screen_subtitle">Authenticate to continue.</string>
+    <string name="unlock_button">Unlock</string>
+    <string name="lock_prompt_title">Unlock Local Notes</string>
+    <string name="use_pin_instead">Use PIN instead</string>
+    <string name="use_fingerprint_instead">Use fingerprint instead</string>
+    <string name="enter_pin_title">Enter your PIN</string>
+    <string name="pin_incorrect">That PIN didn\'t match. %1$d attempts left.</string>
+    <string name="pin_locked_out">Too many attempts. Try again in %1$s.</string>
+
+    <!-- PIN setup -->
+    <string name="pin_setup_title">App PIN</string>
+    <string name="pin_setup_enter_new">Enter a new PIN</string>
+    <string name="pin_setup_confirm">Confirm your PIN</string>
+    <string name="pin_setup_mismatch">Those didn\'t match. Start over.</string>
+    <string name="pin_setup_too_short">Use at least 4 digits.</string>
+    <string name="pin_row_title">App PIN</string>
+    <string name="pin_row_subtitle_set">Used as a fallback if your fingerprint doesn\'t work.</string>
+    <string name="pin_row_subtitle_unset">Optional fallback for when your fingerprint doesn\'t work.</string>
+    <string name="pin_set_badge">Set</string>
+    <string name="pin_not_set_badge">Not set</string>
+    <string name="remove_pin_title">Remove app PIN?</string>
+    <string name="remove_pin_message">You\'ll only be able to unlock with your fingerprint after this.</string>
+    <string name="remove_action">Remove</string>
+
+    <!-- Translations -->
+    <string name="section_language">Language</string>
+    <string name="export_template_title">Export translation template</string>
+    <string name="export_template_subtitle">Creates a test.txt file listing every piece of text in the app, ready to translate.</string>
+    <string name="export_template_success">Template saved to the translations folder</string>
+    <string name="export_template_failed">Couldn\'t create the template</string>
+    <string name="language_changed_restart">Restarting to apply the new language…</string>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="radius_pill">30dp</dimen>
+    <dimen name="radius_lg">22dp</dimen>
+    <dimen name="radius_md">18dp</dimen>
+    <dimen name="radius_sm">14dp</dimen>
+    <dimen name="radius_xs">11dp</dimen>
+    <dimen name="screen_padding">20dp</dimen>
+</resources>
