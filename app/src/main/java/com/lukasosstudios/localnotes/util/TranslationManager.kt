@@ -77,7 +77,6 @@ object TranslationManager {
     }
 
     private val ALL_STRINGS: List<Pair<String, Int>> = listOf(
-        "app_name" to R.string.app_name,
         "eyebrow_home" to R.string.eyebrow_home,
         "summary_label" to R.string.summary_label,
         "notes_count_one" to R.string.notes_count_one,
