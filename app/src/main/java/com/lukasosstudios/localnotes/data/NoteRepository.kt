@@ -1,45 +1,40 @@
 package com.lukasosstudios.localnotes.data
 
 import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Environment
-import androidx.core.content.ContextCompat
 import com.lukasosstudios.localnotes.model.Note
 import com.lukasosstudios.localnotes.model.NoteColor
 import java.io.File
 
 /**
  * Reads and writes notes as individual plain-text files under
- * Android/media/notes/ on shared external storage. Each file is the single
- * source of truth for that note -- there is no hidden database.
+ * Android/media/<package>/notes/ on shared external storage. Each file is
+ * the single source of truth for that note -- there is no hidden database.
+ *
+ * Uses Context.getExternalMediaDirs() rather than requesting broad storage
+ * permission: on API 21+ every app gets its own Android/media/<package>/
+ * folder with zero permission prompts, at the exact same path this app has
+ * always used. Falls back to manual path construction only if the platform
+ * ever returns no media dirs at all (extremely unlikely on a real device).
  */
 class NoteRepository(private val context: Context) {
 
-    fun storageRoot(): File =
-        File(Environment.getExternalStorageDirectory(), "Android/media/${context.packageName}")
+    fun storageRoot(): File {
+        val mediaDir = context.getExternalMediaDirs().firstOrNull { it != null }
+        return mediaDir ?: File(Environment.getExternalStorageDirectory(), "Android/media/${context.packageName}")
+    }
 
     fun notesDir(): File = File(storageRoot(), "notes")
 
     fun settingsFile(): File = File(storageRoot(), "settings.properties")
 
-    fun hasPermission(): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            Environment.isExternalStorageManager()
-        } else {
-            ContextCompat.checkSelfPermission(
-                context,
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_GRANTED
-        }
-    }
+    fun hasPermission(): Boolean = true
 
     fun ensureDirs() {
         if (!notesDir().exists()) notesDir().mkdirs()
     }
 
     fun listNotes(): List<Note> {
-        if (!hasPermission()) return emptyList()
         ensureDirs()
         val files = notesDir().listFiles { f -> f.isFile && f.name.endsWith(".txt") } ?: return emptyList()
         return files.mapNotNull { parseNoteFile(it) }
@@ -81,7 +76,6 @@ class NoteRepository(private val context: Context) {
     }
 
     fun saveNote(note: Note) {
-        if (!hasPermission()) return
         ensureDirs()
         val file = File(notesDir(), note.fileName)
         val sb = StringBuilder()

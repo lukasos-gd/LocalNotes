@@ -2,10 +2,7 @@ package com.lukasosstudios.localnotes.ui.settings
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
@@ -91,7 +88,6 @@ class SettingsActivity : TranslatedActivity() {
         renderPinRow()
         applyTranslatedStrings()
 
-        binding.storageActionButton.setOnClickListener { requestStoragePermission() }
         binding.exportRow.setOnClickListener { exportBackup() }
         binding.importRow.setOnClickListener { importPicker.launch(arrayOf("application/zip", "application/octet-stream")) }
         binding.pinRow.setOnClickListener { pinSetupLauncher.launch(Intent(this, PinSetupActivity::class.java)) }
@@ -187,28 +183,7 @@ class SettingsActivity : TranslatedActivity() {
     }
 
     private fun renderStorageStatus() {
-        val granted = repository.hasPermission()
-        binding.storageStatusIcon.visibility = if (granted) View.VISIBLE else View.GONE
-        binding.storageActionButton.visibility = if (granted) View.GONE else View.VISIBLE
-        binding.storageActionLabel.text = getString(R.string.storage_not_granted)
-    }
-
-    private fun requestStoragePermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            try {
-                val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                intent.data = Uri.parse("package:$packageName")
-                startActivity(intent)
-            } catch (e: Exception) {
-                startActivity(Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION))
-            }
-        } else {
-            androidx.core.app.ActivityCompat.requestPermissions(
-                this,
-                arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE),
-                1001
-            )
-        }
+        binding.storageStatusIcon.visibility = View.VISIBLE
     }
 
     private fun buildLanguageOptions() {

@@ -22,8 +22,6 @@
     <string name="empty_title_default">No notes yet</string>
     <string name="empty_copy_search">Try a different word or phrase.</string>
     <string name="empty_copy_default">Tap New note to create your first one.</string>
-    <string name="empty_title_needs_permission">Storage access needed</string>
-    <string name="empty_copy_needs_permission">Tap here to grant access so your notes can be saved.</string>
     <string name="cd_calculator">Open calculator</string>
     <string name="cd_settings">Open settings</string>
     <string name="cd_pin">Pin note</string>
@@ -65,11 +63,8 @@
     <string name="section_storage">Local file storage</string>
     <string name="storage_title">Android/media storage</string>
     <string name="storage_subtitle">notes live as plain-text files in Android/media/com.lukasosstudios.localnotes/notes, settings in the same folder\'s settings.properties.</string>
-    <string name="storage_granted">Access granted</string>
-    <string name="storage_not_granted">Grant access</string>
     <string name="about_title">Local Notes</string>
     <string name="permissions_link">Open Android app settings</string>
-    <string name="storage_permission_rationale">Local Notes needs "All files access" to keep your notes as plain-text files in Android/media/notes, right where you can find them.</string>
 
     <!-- Note color names -->
     <string name="color_cream">Butter</string>

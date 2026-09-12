@@ -252,30 +252,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="14dp"
                     android:lineSpacingExtra="3dp"
                     android:text="@string/storage_subtitle"
                     android:textColor="@color/mutedForeground"
                     android:textSize="12sp" />
-
-                <LinearLayout
-                    android:id="@+id/storageActionButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:background="@drawable/bg_connect_button"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/storageActionLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif"
-                        android:textStyle="bold"
-                        android:text="@string/storage_not_granted"
-                        android:textColor="@color/primaryForeground"
-                        android:textSize="13sp" />
-                </LinearLayout>
             </LinearLayout>
 
             <!-- Security -->

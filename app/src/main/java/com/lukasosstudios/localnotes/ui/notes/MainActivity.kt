@@ -2,10 +2,7 @@ package com.lukasosstudios.localnotes.ui.notes
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -113,58 +110,8 @@ class MainActivity : TranslatedActivity() {
         super.onResume()
         if (AppLock.guard(this, settingsRepository, lockLauncher)) return
 
-        if (!repository.hasPermission()) {
-            if (!settingsRepository.storagePromptShown) {
-                settingsRepository.storagePromptShown = true
-                promptForStoragePermission()
-            }
-            renderNoPermissionState()
-        } else {
-            settingsRepository.loadFromFile(repository)
-            reload()
-        }
-    }
-
-    private fun renderNoPermissionState() {
-        binding.notesRecyclerView.visibility = View.GONE
-        binding.emptyState.visibility = View.VISIBLE
-        binding.emptyIcon.setImageResource(R.drawable.ic_folder)
-        binding.emptyTitle.text = getString(R.string.empty_title_needs_permission)
-        binding.emptyCopy.text = getString(R.string.empty_copy_needs_permission)
-        binding.emptyState.setOnClickListener { requestStoragePermission() }
-        binding.summaryTitle.text = getString(R.string.storage_not_granted)
-        binding.sectionTitle.text = getString(R.string.section_your_notes)
-        binding.emptyTrashButton.visibility = View.GONE
-    }
-
-    private fun promptForStoragePermission() {
-        ConfirmDialog.show(
-            activity = this,
-            title = getString(R.string.storage_not_granted),
-            message = getString(R.string.storage_permission_rationale),
-            icon = R.drawable.ic_folder,
-            positiveLabel = getString(R.string.storage_not_granted),
-            negativeLabel = null,
-            cancelable = false
-        ) { requestStoragePermission() }
-    }
-
-    private fun requestStoragePermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            try {
-                val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                intent.data = Uri.parse("package:$packageName")
-                startActivity(intent)
-            } catch (e: Exception) {
-                startActivity(Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION))
-            }
-        } else {
-            androidx.core.app.ActivityCompat.requestPermissions(
-                this,
-                arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE),
-                REQUEST_LEGACY_STORAGE
-            )
-        }
+        settingsRepository.loadFromFile(repository)
+        reload()
     }
 
     private fun reload() {
@@ -433,9 +380,5 @@ class MainActivity : TranslatedActivity() {
         val intent = Intent(this, NoteEditorActivity::class.java)
         if (fileName != null) intent.putExtra(NoteEditorActivity.EXTRA_FILE_NAME, fileName)
         startActivity(intent)
-    }
-
-    companion object {
-        private const val REQUEST_LEGACY_STORAGE = 1001
     }
 }
