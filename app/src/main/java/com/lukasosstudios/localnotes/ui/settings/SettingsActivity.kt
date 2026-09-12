@@ -2,6 +2,7 @@ package com.lukasosstudios.localnotes.ui.settings
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -39,30 +40,35 @@ class SettingsActivity : TranslatedActivity() {
 
     private var pendingImportUri: Uri? = null
 
-    private val lockLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode != Activity.RESULT_OK) finish()
-    }
-
-    private val verifyToDisableLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            settings.appLockEnabled = false
-            settings.writeToFile(repository, repository.listNotes().size)
+    private val lockLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode != Activity.RESULT_OK) finish()
         }
-        renderAppLockSwitch()
-    }
 
-    private val pinSetupLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            renderPinRow()
+    private val verifyToDisableLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                settings.appLockEnabled = false
+                settings.writeToFile(repository, repository.listNotes().size)
+            }
+            renderAppLockSwitch()
         }
-    }
 
-    private val importPicker = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-        if (uri != null) confirmImport(uri)
-    }
+    private val pinSetupLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                renderPinRow()
+            }
+        }
+
+    private val importPicker =
+        registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+            if (uri != null) confirmImport(uri)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -70,6 +76,7 @@ class SettingsActivity : TranslatedActivity() {
         settings = SettingsRepository(this)
         backupManager = BackupManager(this, repository)
         pinManager = PinManager(this)
+
         settings.loadFromFile(repository)
 
         binding.backButton.setOnClickListener { finish() }
@@ -88,16 +95,39 @@ class SettingsActivity : TranslatedActivity() {
         renderPinRow()
         applyTranslatedStrings()
 
-        binding.exportRow.setOnClickListener { exportBackup() }
-        binding.importRow.setOnClickListener { importPicker.launch(arrayOf("application/zip", "application/octet-stream")) }
-        binding.pinRow.setOnClickListener { pinSetupLauncher.launch(Intent(this, PinSetupActivity::class.java)) }
-        binding.pinRemoveButton.setOnClickListener { confirmRemovePin() }
-        binding.exportTemplateRow.setOnClickListener { exportTranslationTemplate() }
+        binding.exportRow.setOnClickListener {
+            exportBackup()
+        }
+
+        binding.importRow.setOnClickListener {
+            importPicker.launch(
+                arrayOf(
+                    "application/zip",
+                    "application/octet-stream"
+                )
+            )
+        }
+
+        binding.pinRow.setOnClickListener {
+            pinSetupLauncher.launch(
+                Intent(this, PinSetupActivity::class.java)
+            )
+        }
+
+        binding.pinRemoveButton.setOnClickListener {
+            confirmRemovePin()
+        }
+
+        binding.exportTemplateRow.setOnClickListener {
+            exportTranslationTemplate()
+        }
     }
 
     override fun onResume() {
         super.onResume()
+
         if (AppLock.guard(this, settings, lockLauncher)) return
+
         renderStorageStatus()
     }
 
@@ -128,58 +158,126 @@ class SettingsActivity : TranslatedActivity() {
 
     private fun buildThemeOptions() {
         binding.themeGroup.removeAllViews()
+
         val entries = listOf(
-            Triple(ThemeMode.SYSTEM, getString(R.string.theme_system), R.drawable.ic_phone),
-            Triple(ThemeMode.LIGHT, getString(R.string.theme_light), R.drawable.ic_sun),
-            Triple(ThemeMode.DARK, getString(R.string.theme_dark), R.drawable.ic_moon)
+            Triple(
+                ThemeMode.SYSTEM,
+                getString(R.string.theme_system),
+                R.drawable.ic_phone
+            ),
+            Triple(
+                ThemeMode.LIGHT,
+                getString(R.string.theme_light),
+                R.drawable.ic_sun
+            ),
+            Triple(
+                ThemeMode.DARK,
+                getString(R.string.theme_dark),
+                R.drawable.ic_moon
+            )
         )
+
         entries.forEach { (mode, label, icon) ->
-            val row = ItemOptionRowBinding.inflate(LayoutInflater.from(this), binding.themeGroup, false)
+            val row = ItemOptionRowBinding.inflate(
+                LayoutInflater.from(this),
+                binding.themeGroup,
+                false
+            )
+
             row.optionIcon.setImageResource(icon)
             row.optionLabel.text = label
+
             val selected = settings.theme == mode
             styleOptionRow(row, selected)
+
             row.optionRoot.setOnClickListener {
                 HapticUtils.tick(this)
                 settings.theme = mode
-                settings.writeToFile(repository, repository.listNotes().size)
+                settings.writeToFile(
+                    repository,
+                    repository.listNotes().size
+                )
                 ThemeUtils.apply(mode)
                 buildThemeOptions()
             }
+
             binding.themeGroup.addView(row.root)
         }
     }
 
     private fun buildSortOptions() {
         binding.sortGroup.removeAllViews()
+
         val entries = listOf(
-            Triple(SortMode.UPDATED, getString(R.string.sort_updated), R.drawable.ic_clock),
-            Triple(SortMode.CREATED, getString(R.string.sort_created), R.drawable.ic_calendar),
-            Triple(SortMode.TITLE, getString(R.string.sort_title), R.drawable.ic_type)
+            Triple(
+                SortMode.UPDATED,
+                getString(R.string.sort_updated),
+                R.drawable.ic_clock
+            ),
+            Triple(
+                SortMode.CREATED,
+                getString(R.string.sort_created),
+                R.drawable.ic_calendar
+            ),
+            Triple(
+                SortMode.TITLE,
+                getString(R.string.sort_title),
+                R.drawable.ic_type
+            )
         )
+
         entries.forEach { (mode, label, icon) ->
-            val row = ItemOptionRowBinding.inflate(LayoutInflater.from(this), binding.sortGroup, false)
+            val row = ItemOptionRowBinding.inflate(
+                LayoutInflater.from(this),
+                binding.sortGroup,
+                false
+            )
+
             row.optionIcon.setImageResource(icon)
             row.optionLabel.text = label
+
             val selected = settings.sort == mode
             styleOptionRow(row, selected)
+
             row.optionRoot.setOnClickListener {
                 HapticUtils.tick(this)
                 settings.sort = mode
-                settings.writeToFile(repository, repository.listNotes().size)
+                settings.writeToFile(
+                    repository,
+                    repository.listNotes().size
+                )
                 buildSortOptions()
             }
+
             binding.sortGroup.addView(row.root)
         }
     }
 
-    private fun styleOptionRow(row: ItemOptionRowBinding, selected: Boolean) {
+    private fun styleOptionRow(
+        row: ItemOptionRowBinding,
+        selected: Boolean
+    ) {
         row.optionRoot.setBackgroundResource(
-            if (selected) R.drawable.bg_option_row_selected else R.drawable.bg_option_row
+            if (selected) {
+                R.drawable.bg_option_row_selected
+            } else {
+                R.drawable.bg_option_row
+            }
         )
-        row.optionCheck.visibility = if (selected) View.VISIBLE else View.INVISIBLE
-        val tint = if (selected) R.color.tint else R.color.mutedForeground
-        row.optionIcon.setColorFilter(ContextCompat.getColor(this, tint))
+
+        row.optionCheck.visibility =
+            if (selected) View.VISIBLE else View.INVISIBLE
+
+        val tint =
+            if (selected) {
+                R.color.tint
+            } else {
+                R.color.mutedForeground
+            }
+
+        row.optionIcon.setColorFilter(
+            ContextCompat.getColor(this, tint)
+        )
     }
 
     private fun renderStorageStatus() {
@@ -188,72 +286,159 @@ class SettingsActivity : TranslatedActivity() {
 
     private fun buildLanguageOptions() {
         binding.languageGroup.removeAllViews()
+
         val active = TranslationManager.activeId(this)
 
         TranslationManager.builtInOptions().forEach { option ->
-            val row = ItemOptionRowBinding.inflate(LayoutInflater.from(this), binding.languageGroup, false)
+            val row = ItemOptionRowBinding.inflate(
+                LayoutInflater.from(this),
+                binding.languageGroup,
+                false
+            )
+
             row.optionIcon.setImageResource(R.drawable.ic_type)
             row.optionLabel.text = option.displayName
-            styleOptionRow(row, active == option.id)
-            row.optionRoot.setOnClickListener { applyLanguageChange(option.id) }
+
+            styleOptionRow(
+                row,
+                active == option.id
+            )
+
+            row.optionRoot.setOnClickListener {
+                applyLanguageChange(option.id)
+            }
+
             binding.languageGroup.addView(row.root)
         }
 
         val custom = TranslationManager.customOptions(this)
+
         custom.forEach { option ->
-            val row = ItemOptionRowBinding.inflate(LayoutInflater.from(this), binding.languageGroup, false)
+            val row = ItemOptionRowBinding.inflate(
+                LayoutInflater.from(this),
+                binding.languageGroup,
+                false
+            )
+
             row.optionIcon.setImageResource(R.drawable.ic_folder)
             row.optionLabel.text = option.displayName
-            styleOptionRow(row, active == option.id)
-            row.optionRoot.setOnClickListener { applyLanguageChange(option.id) }
+
+            styleOptionRow(
+                row,
+                active == option.id
+            )
+
+            row.optionRoot.setOnClickListener {
+                applyLanguageChange(option.id)
+            }
+
             binding.languageGroup.addView(row.root)
         }
     }
 
     private fun applyLanguageChange(id: String) {
         HapticUtils.tick(this)
+
         TranslationManager.setActive(this, id)
-        Toast.makeText(this, R.string.language_changed_restart, Toast.LENGTH_SHORT).show()
-        val intent = Intent(this, com.lukasosstudios.localnotes.ui.notes.MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+        Toast.makeText(
+            this,
+            R.string.language_changed_restart,
+            Toast.LENGTH_SHORT
+        ).show()
+
+        val intent = Intent(
+            this,
+            com.lukasosstudios.localnotes.ui.notes.MainActivity::class.java
+        )
+
+        intent.flags =
+            Intent.FLAG_ACTIVITY_NEW_TASK or
+            Intent.FLAG_ACTIVITY_CLEAR_TASK
+
         startActivity(intent)
     }
 
     private fun exportTranslationTemplate() {
         val file = TranslationManager.exportTemplate(this)
+
         Toast.makeText(
             this,
-            if (file != null) R.string.export_template_success else R.string.export_template_failed,
+            if (file != null) {
+                R.string.export_template_success
+            } else {
+                R.string.export_template_failed
+            },
             Toast.LENGTH_LONG
         ).show()
     }
 
     private fun renderAppLockSwitch() {
         binding.appLockSwitch.setOnCheckedChangeListener(null)
-        binding.appLockSwitch.isChecked = settings.appLockEnabled
+
+        binding.appLockSwitch.isChecked =
+            settings.appLockEnabled
+
         binding.appLockSwitch.setOnCheckedChangeListener { _, checked ->
             if (checked) {
                 val manager = BiometricManager.from(this)
-                if (manager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK) != BiometricManager.BIOMETRIC_SUCCESS) {
-                    Toast.makeText(this, R.string.app_lock_unavailable, Toast.LENGTH_LONG).show()
+
+                if (
+                    manager.canAuthenticate(
+                        BiometricManager.Authenticators.BIOMETRIC_WEAK
+                    ) != BiometricManager.BIOMETRIC_SUCCESS
+                ) {
+                    Toast.makeText(
+                        this,
+                        R.string.app_lock_unavailable,
+                        Toast.LENGTH_LONG
+                    ).show()
+
                     renderAppLockSwitch()
                     return@setOnCheckedChangeListener
                 }
+
                 settings.appLockEnabled = true
-                settings.writeToFile(repository, repository.listNotes().size)
+
+                settings.writeToFile(
+                    repository,
+                    repository.listNotes().size
+                )
+
                 AppLockState.unlocked = true
             } else {
                 renderAppLockSwitch()
-                verifyToDisableLauncher.launch(Intent(this, LockActivity::class.java))
+
+                verifyToDisableLauncher.launch(
+                    Intent(this, LockActivity::class.java)
+                )
             }
         }
     }
 
     private fun renderPinRow() {
         val hasPin = pinManager.hasPin()
-        binding.pinRowBadge.text = getString(if (hasPin) R.string.pin_set_badge else R.string.pin_not_set_badge)
-        binding.pinRowSubtitle.text = getString(if (hasPin) R.string.pin_row_subtitle_set else R.string.pin_row_subtitle_unset)
-        binding.pinRemoveButton.visibility = if (hasPin) View.VISIBLE else View.GONE
+
+        binding.pinRowBadge.text =
+            getString(
+                if (hasPin) {
+                    R.string.pin_set_badge
+                } else {
+                    R.string.pin_not_set_badge
+                }
+            )
+
+        binding.pinRowSubtitle.text =
+            getString(
+                if (hasPin) {
+                    R.string.pin_row_subtitle_set
+                } else {
+                    R.string.pin_row_subtitle_unset
+                }
+            )
+
+        binding.pinRemoveButton.visibility =
+            if (hasPin) View.VISIBLE else View.GONE
     }
 
     private fun confirmRemovePin() {
@@ -272,25 +457,55 @@ class SettingsActivity : TranslatedActivity() {
 
     private fun exportBackup() {
         val zip = backupManager.export()
+
         if (zip == null) {
-            Toast.makeText(this, R.string.backup_export_failed, Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                this,
+                R.string.backup_export_failed,
+                Toast.LENGTH_LONG
+            ).show()
             return
         }
-        Toast.makeText(this, R.string.backup_export_success, Toast.LENGTH_SHORT).show()
+
+        Toast.makeText(
+            this,
+            R.string.backup_export_success,
+            Toast.LENGTH_SHORT
+        ).show()
+
         try {
-            val uri = FileProvider.getUriForFile(this, "$packageName.fileprovider", zip)
+            val uri = FileProvider.getUriForFile(
+                this,
+                "$packageName.fileprovider",
+                zip
+            )
+
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
                 type = "application/zip"
-                putExtra(Intent.EXTRA_STREAM, uri)
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+                putExtra(
+                    Intent.EXTRA_STREAM,
+                    uri
+                )
+
+                addFlags(
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
             }
-            startActivity(Intent.createChooser(shareIntent, getString(R.string.backup_export_title)))
+
+            startActivity(
+                Intent.createChooser(
+                    shareIntent,
+                    getString(R.string.backup_export_title)
+                )
+            )
         } catch (_: Exception) {
         }
     }
 
     private fun confirmImport(uri: Uri) {
         pendingImportUri = uri
+
         ConfirmDialog.show(
             activity = this,
             title = getString(R.string.backup_import_confirm_title),
@@ -298,10 +513,17 @@ class SettingsActivity : TranslatedActivity() {
             icon = R.drawable.ic_import,
             positiveLabel = getString(R.string.import_action)
         ) {
-            val success = pendingImportUri?.let { backupManager.import(it) } ?: false
+            val success = pendingImportUri?.let { importUri ->
+                backupManager.import(importUri)
+            } ?: false
+
             Toast.makeText(
                 this,
-                if (success) R.string.backup_import_success else R.string.backup_import_failed,
+                if (success) {
+                    R.string.backup_import_success
+                } else {
+                    R.string.backup_import_failed
+                },
                 Toast.LENGTH_LONG
             ).show()
         }
